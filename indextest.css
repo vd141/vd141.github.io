@@ -4,4 +4,10 @@ h1 {
 	line-height: 1.5;
 	color: #333;
 	background-color: #84b4b1;
-	text-align: center;}
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 65px;
+	font-weight: 400;
+	letter-spacing: 3px;
+	line-height: .8;
+	padding-top: 50px;}
