@@ -11,3 +11,9 @@ h1 {
 	letter-spacing: 3px;
 	line-height: .8;
 	padding-top: 50px;}
+
+	span{
+		text-transform: uppercase;
+		letter-spacing: 7px;
+		font-size: 25px;
+		line-height: 1;}
