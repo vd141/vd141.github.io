@@ -1,3 +1,7 @@
+html{
+	background-color: #84b4b1;
+}
+
 head {
 	background-color: #84b4b1;
 	color: #fff;
@@ -19,8 +23,38 @@ h1 {
 	line-height: .8;
 	padding-top: 50px;}
 
+h2 {
+	font-family: 'Lato', sans-serif;
+	font-weight: 300;
+	line-height: 1.5;
+	color: #333;
+	background-color: #84b4b1;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 30px;
+	font-weight: 4300;
+	letter-spacing: 2px;
+	line-height: .5;
+	padding-top: 25px;}
+
 span{
 	text-transform: lowercase;
 	letter-spacing: 7px;
 	font-size: 25px;
 	line-height: 1;}
+
+p { color: #4c4a37;
+	text-align:center;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 18px;
+	line-height: 32px;
+	margin: 0 0 24px; }
+
+a { color: #ff2400;
+	text-align: center;
+	font-family: 'Lato', sans-serif;
+	background: #fff4a3;
+	text-decoration: none; }
+
+a:hover {
+	color: #ffcc66 }
