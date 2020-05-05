@@ -20,7 +20,7 @@ h1 {
 	padding-top: 50px;}
 
 span{
-	text-transform: uppercase;
+	text-transform: lowercase;
 	letter-spacing: 7px;
 	font-size: 25px;
 	line-height: 1;}
