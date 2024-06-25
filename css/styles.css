@@ -1,8 +1,8 @@
-* {
+body {
     font-family: Georgia;
 }
 
-li {
+ul {
     display: inline;
     text-align: center;
 }
