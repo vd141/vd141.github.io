@@ -2,7 +2,10 @@ body {
     font-family: Georgia;
 }
 
-ul {
-    display: inline;
+.navbar-list {
     text-align: center;
+}
+
+.navbar-item {
+    display: inline;
 }
