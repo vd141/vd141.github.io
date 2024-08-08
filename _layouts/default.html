@@ -11,30 +11,12 @@
 </head>
 
 <body>
-    <div class="masthead">
-        <div class="heading"><a href="/">victor dinh</a></div>   
-        <nav>
-            <div class="tab">
-                <button onclick="window.location.href='/'">about</button>
-            </div>
-            <div class="tab">
-                <button onclick="window.location.href='/projects'">projects</button>
-            </div>
-            <div class="tab">
-                <button onclick="window.location.href='/updates'">updates</button>
-            </div>
-            <div class="tab">
-                <button onclick="window.location.href='/resume'">resume</button>
-            </div>
-        </nav>    
-    </div>
-
-
+    {% include navigation.html %}
+    {{page.title}}
     <div class="container">
 
     {{ content }}
 
     </div>
-
 </body>
 </html>
