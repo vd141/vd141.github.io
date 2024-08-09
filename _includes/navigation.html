@@ -1,17 +1,14 @@
 <div class="masthead">
-    <div class="heading"><a href="/">victor dinh</a></div>   
+    <div class="heading"><a href="/">victor dinh_</a></div>   
     <nav>
         <div class="tab">
-            <button onclick="window.location.href='/about.markdown'">about</button>
+            <button onclick="window.location.href='/about'" {% if page.url == "/about/"%}style="color: red; text-decoration: underline;"{% endif %}>about</button>
         </div>
         <div class="tab">
-            <button onclick="window.location.href='/projects'">projects</button>
+            <button onclick="window.location.href='/projects'"{% if page.url == "/projects/"%}style="color: red; text-decoration: underline;"{% endif %}>projects</button>
         </div>
         <div class="tab">
-            <button onclick="window.location.href='/updates'">updates</button>
-        </div>
-        <div class="tab">
-            <button onclick="window.location.href='/resume'">resume</button>
+            <button onclick="window.location.href='/updates'"{% if page.url == "/updates/"%}style="color: red; text-decoration: underline;"{% endif %}>updates</button>
         </div>
     </nav>    
 </div>

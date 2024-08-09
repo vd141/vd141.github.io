@@ -41,28 +41,12 @@ body {
     overscroll-behavior: none;
 }
 
-@font-face{ 
-    font-family: "Galano";
-    src: url("../fonts/galanogrotesquedemo-bold-webfont.woff");
-}
-
-@font-face{ 
-    font-family: "HK Grotesk Regular";
-    src: url("../fonts/HKGrotesk-Regular.otf");
-}
-
-@font-face{ 
-    font-family: "HK Grotesk Bold";
-    src: url("../fonts/HKGrotesk-Bold.otf");
-}
-
 p {
     line-height: 18px;
-    font-family: "HK Grotesk Regular";
+    font-family: "Hanken Grotesk";
 }
 
 a {
-    color: #76d424;
     text-decoration: none;
 }
 
@@ -73,7 +57,7 @@ img {
 
 ul {
     line-height: 18px;
-    font-family: "HK Grotesk Regular";
+    font-family: "Hanken Grotesk";
     margin-left: -10px;
 }
 
@@ -156,6 +140,9 @@ ul {
         padding-top: 10px;
         margin: 0px 6px 0px 6px;
     }
+    .tab button:hover {
+        border-color:red
+    }
     .container {
         width: 65%;
         margin: auto;
@@ -170,8 +157,6 @@ ul {
 }
 
 .masthead {
-    font-family: "Hanken Grotesk", sans-serif;
-    font-weight: 800;
     padding-top: 15px;
     padding-bottom: 5px;
     background-color: #FADA5E;
@@ -188,12 +173,13 @@ ul {
 }
 
 .heading {
+    font-family: "Hanken Grotesk", sans-serif;
+    font-weight: 400;
     letter-spacing: 1px;
     color: black;
     position: relative;
     padding-bottom: 10px;
     display: block;    
-    font-weight: normal;
 }
 
 .heading a {
@@ -237,7 +223,7 @@ nav {
     color: black;
     font-size: 18px;
     letter-spacing: 0.5px;
-    font-family: "HK Grotesk Bold";
+    font-family: "Hanken Grotesk";
     line-height: 1.2;
     font-weight: normal;
     -webkit-margin-before: 0;
@@ -247,12 +233,12 @@ nav {
 #currently {
     font-size: 18px;
     font-weight: normal;
-    font-family: "HK Grotesk Bold";
+    font-family: "Hanken Grotesk";
     display: inline;
 }
 
 h1 { /* for project and update titles*/
-    font-size: 18px;
+    font-size: 36px;
     letter-spacing: 1px;
     color: black;
     font-family: "Galano";
@@ -265,7 +251,7 @@ h1 { /* for project and update titles*/
 h2 { /* for update dates and project info */
     font-size: 14px;
     letter-spacing: 0.5px;
-    font-family: "HK Grotesk Bold";
+    font-family: "Hanken Grotesk";
     line-height: 1.2;
     font-weight: normal;
     -webkit-margin-before: 0;
@@ -277,7 +263,7 @@ h3 { /* for (nav) page titles */
     letter-spacing: 1px;
     color: black;
     font-weight: normal;
-    font-family: "Galano";
+    font-family: "Hanken Grotesk";
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
 }
@@ -285,7 +271,7 @@ h3 { /* for (nav) page titles */
 h4 { /* for post listings on updates page */
     font-size: 18px;
     letter-spacing: 0.5px;
-    font-family: "HK Grotesk Bold";
+    font-family: "Hanken Grotesk";
     line-height: 1.2;
     font-weight: normal;
     -webkit-margin-before: 0;
@@ -295,7 +281,7 @@ h4 { /* for post listings on updates page */
 h5 { /* project details */
     font-size: 14px;
     letter-spacing: 0.5px;
-    font-family: "HK Grotesk Regular";
+    font-family: "Hanken Grotesk";
     line-height: 1.4;
     font-weight: normal;
     -webkit-margin-before: 0;
@@ -425,4 +411,11 @@ h5 { /* project details */
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+footer #icon_reference {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    margin: auto;
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>victor dinh</title>
+    <title>victor dinh | {{page.title}}</title>
     <link rel="icon" type="image/png" href="../images/fox.png">
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,11 +12,19 @@
 
 <body>
     {% include navigation.html %}
-    {{page.title}}
     <div class="container">
 
     {{ content }}
 
     </div>
+    <footer>
+        <div id="last_update">
+            <img src="/images/icons8-fox-48.png">
+            last updated: {{page.lastupdate}}
+        </div>
+        <div id="icon_reference">
+            <a target="_blank" href="https://icons8.com/icon/RlkHMHJofPY9/fox">Fox</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+        </div>
+    </footer>
 </body>
 </html>
