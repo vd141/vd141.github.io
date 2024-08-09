@@ -23,7 +23,8 @@ email: victor.dinh141@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   This is Victor Dinh's portfolio!
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "victor-dinh.com" # the base hostname & protocol for your site, e.g. http://example.com
+domain: vd141.github.io
+url: "https://vd141.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 linkedin_username: victor-dinh
 github_username:  vd141
 permalink: pretty
