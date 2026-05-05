@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Victor Dinh</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F3;
+    --bg-card: #EFEDE8;
+    --text: #1A1916;
+    --text-muted: #7A7873;
+    --accent: #2A5C45;
+    --accent-light: #E8F0EC;
+    --border: rgba(26,25,22,0.1);
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2.5rem;
+    background: rgba(247,246,243,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* SECTIONS */
+  section { padding: 7rem 2.5rem; max-width: 860px; margin: 0 auto; }
+
+  /* HERO */
+  #hero {
+    padding-top: 11rem;
+    padding-bottom: 6rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--text);
+    color: var(--bg);
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .btn-ghost:hover { color: var(--text); border-color: var(--text); }
+
+  /* ABOUT */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+
+  .about-text p:last-child { margin-bottom: 0; }
+
+  .about-text strong { color: var(--text); font-weight: 500; }
+
+  .about-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .meta-item {
+    padding: 1.25rem;
+    background: var(--bg-card);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .meta-item-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .meta-item-value {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* INTERESTS */
+  .interests {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.75rem;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 3px;
+    letter-spacing: 0.02em;
+  }
+
+  /* PROJECTS */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5px;
+  }
+
+  .project-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 2rem;
+    padding: 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+
+  .project-card:first-child { border-radius: 6px 6px 2px 2px; }
+  .project-card:last-child { border-radius: 2px 2px 6px 6px; }
+
+  .project-card:hover {
+    border-color: rgba(26,25,22,0.25);
+    background: #ECEAE4;
+  }
+
+  .project-number {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+
+  .project-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.65;
+    max-width: 520px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-muted);
+  }
+
+  .project-arrow {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    transition: transform 0.2s, color 0.2s;
+    margin-top: 0.25rem;
+  }
+
+  .project-card:hover .project-arrow {
+    transform: translate(2px, -2px);
+    color: var(--accent);
+  }
+
+  .projects-note {
+    margin-top: 2rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* CONTACT */
+  #contact { padding-bottom: 3rem; }
+
+  .contact-inner {
+    background: var(--text);
+    border-radius: 8px;
+    padding: 3.5rem;
+    color: var(--bg);
+  }
+
+  .contact-inner .section-label {
+    color: rgba(247,246,243,0.4);
+  }
+
+  .contact-inner .section-label::after {
+    background: rgba(247,246,243,0.15);
+  }
+
+  .contact-heading {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    line-height: 1.25;
+    color: var(--bg);
+  }
+
+  .contact-sub {
+    font-size: 0.95rem;
+    color: rgba(247,246,243,0.55);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    max-width: 440px;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.25rem;
+    border: 1px solid rgba(247,246,243,0.2);
+    border-radius: 4px;
+    color: var(--bg);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .contact-link:hover {
+    border-color: rgba(247,246,243,0.5);
+    background: rgba(247,246,243,0.06);
+  }
+
+  /* FOOTER */
+  footer {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-text {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
+  /* MOBILE NAV */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--text);
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  /* ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 680px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 56px; left: 0; right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 1.25rem;
+      gap: 1.25rem;
+    }
+    .nav-toggle { display: flex; }
+    section { padding: 5rem 1.25rem; }
+    #hero { padding-top: 8rem; min-height: auto; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .project-card { grid-template-columns: 1fr; }
+    .project-arrow { display: none; }
+    .contact-inner { padding: 2rem 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">VictorDinh<span style="color:var(--accent)">.</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">about</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-tag">Available for opportunities</div>
+  <h1>I build things at the intersection of <em>data, systems,</em> and people.</h1>
+  <p class="hero-sub">Software engineering student interested in big data, machine learning, and systems programming. Driven by growth, agency, and shipping fast with people who care.</p>
+  <div class="hero-actions">
+    <a href="#projects" class="btn-primary">View my work →</a>
+    <a href="#contact" class="btn-ghost">Get in touch</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a software engineering student who loves building products that actually ship. I do my best work on small, fast-moving teams where ownership is real and the feedback loop is short.</p>
+      <p>My technical interests sit at the convergence of <strong>large-scale data systems</strong>, <strong>machine learning infrastructure</strong>, and <strong>systems-level programming</strong> — the parts of the stack where performance and correctness both matter.</p>
+      <p>Outside of code, I'm drawn to problems that scale — systems that stay fast and correct as they grow.</p>
+      <div class="interests">
+        <span class="tag">Big Data</span>
+        <span class="tag">ML Systems</span>
+        <span class="tag">Systems Programming</span>
+        <span class="tag">Distributed Systems</span>
+        <span class="tag">Data Pipelines</span>
+        <span class="tag">Alternative Data</span>
+      </div>
+    </div>
+    <div class="about-meta">
+      <div class="meta-item">
+        <div class="meta-item-label">Status</div>
+        <div class="meta-item-value">Open to internships & roles</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-item-label">Currently learning</div>
+        <div class="meta-item-value">C · Databases · Data Structures and Algorithms · LLM fine-tuning</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-item-label">Based in</div>
+        <div class="meta-item-value">Mountain View and Boston</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-item-label">Education</div>
+        <div class="meta-item-value">B.S. Electrical Engineering, Tufts University</div>
+        <div class="meta-item-value">M.S. Computer Science, Expected 2029, Georgia Tech</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Projects</div>
+  <div class="projects-list">
+
+    <a href="#" class="project-card fade-up">
+      <div>
+        <div class="project-number">01</div>
+        <div class="project-title">Project Name</div>
+        <p class="project-desc">A short description of what this project does, the problem it solves, and one interesting technical decision you made. Keep it to 2–3 sentences.</p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Apache Spark</span>
+          <span class="project-tag">PostgreSQL</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </a>
+
+    <a href="#" class="project-card fade-up">
+      <div>
+        <div class="project-number">02</div>
+        <div class="project-title">Project Name</div>
+        <p class="project-desc">A short description of what this project does, the problem it solves, and one interesting technical decision you made. Keep it to 2–3 sentences.</p>
+        <div class="project-tags">
+          <span class="project-tag">Rust</span>
+          <span class="project-tag">WebAssembly</span>
+          <span class="project-tag">TypeScript</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </a>
+
+    <a href="#" class="project-card fade-up">
+      <div>
+        <div class="project-number">03</div>
+        <div class="project-title">Project Name</div>
+        <p class="project-desc">A short description of what this project does, the problem it solves, and one interesting technical decision you made. Keep it to 2–3 sentences.</p>
+        <div class="project-tags">
+          <span class="project-tag">PyTorch</span>
+          <span class="project-tag">FastAPI</span>
+          <span class="project-tag">Docker</span>
+        </div>
+      </div>
+      <div class="project-arrow">↗</div>
+    </a>
+
+  </div>
+  <p class="projects-note">
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 6.5v.5"/></svg>
+    More on <a href="https://github.com/vd141" style="color:var(--text-muted); text-decoration:underline; text-underline-offset:3px;">GitHub →</a>
+  </p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-label">Contact</div>
+    <h2 class="contact-heading">Let's build something together.</h2>
+    <p class="contact-sub">I'm actively looking for internship and new grad opportunities. If you're working on something interesting, I'd love to hear about it.</p>
+    <div class="contact-links">
+      <a href="mailto:vdinh37@gatech.edu" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M2 7l8 5 8-5"/></svg>
+        vdinh37[at]gatech[dot]edu
+      </a>
+      <a href="https://github.com/vd141" target="_blank" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 0 0-2.529 15.591c.4.074.547-.174.547-.386l-.01-1.352c-2.225.483-2.695-1.073-2.695-1.073-.364-.924-.889-1.17-.889-1.17-.727-.497.055-.487.055-.487.803.057 1.226.825 1.226.825.713 1.222 1.871.869 2.328.664.073-.517.279-.869.508-1.069-1.776-.202-3.644-.888-3.644-3.953 0-.874.312-1.588.823-2.147-.083-.202-.357-1.016.078-2.117 0 0 .671-.215 2.198.819A7.653 7.653 0 0 1 10 6.82c.679.003 1.364.092 2.003.269 1.526-1.034 2.196-.819 2.196-.819.436 1.101.162 1.915.08 2.117.513.559.821 1.273.821 2.147 0 3.073-1.871 3.749-3.653 3.947.288.248.544.735.544 1.481l-.009 2.196c0 .214.144.464.55.386A8.001 8.001 0 0 0 10 2z"/></svg>
+        GitHub
+      </a>
+      <a href="https://linkedin.com/in/victor-dinh/" target="_blank" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M16.5 2h-13C2.67 2 2 2.67 2 3.5v13c0 .83.67 1.5 1.5 1.5h13c.83 0 1.5-.67 1.5-1.5v-13c0-.83-.67-1.5-1.5-1.5zM7 15H5V8h2v7zm-1-8.27a1.13 1.13 0 1 1 0-2.26 1.13 1.13 0 0 1 0 2.26zM15 15h-2v-3.5c0-.83-.67-1.5-1.5-1.5S10 10.67 10 11.5V15H8V8h2v1.12A3 3 0 0 1 15 11.5V15z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-text">© 2026 Victor Dinh</span>
+  <div class="footer-links">
+    <a href="#hero">Back to top ↑</a>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 120);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
