@@ -2,6 +2,9 @@ site_name: Victor Dinh
 site_url: https://vd141.github.io
 theme:
   name: material
+  palette:
+    scheme: victor
+    primary: custom
 plugins:
   - blog
   - tags
