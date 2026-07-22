@@ -1,10 +1,47 @@
 site_name: Victor Dinh
 site_url: https://vd141.github.io
+copyright: Copyright &copy; 2026 Victor Dinh
+extra_css:
+  - stylesheets/extra.css
 theme:
   name: material
+  features:
+    - search.suggest
+    - search.highlight
+    - search.share
+    - header.autohide
   palette:
-    scheme: victor
-    primary: custom
+    # palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: victor
+      primary: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+      accent: green
+    # palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+      accent: green
+font:
+  text: Gelasio
+  code: Roboto Mono
 plugins:
   - blog
   - tags
+  - search
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/vd141
+      name: GitHub
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/victor-dinh/
+      name: LinkedIn
+    - icon: material/rss
+      link: /blog/
+      name: Blog
