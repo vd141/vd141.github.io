@@ -5,7 +5,7 @@ date:
 
 # On blogging
 
-I kept a blog when I was younger. I approached it as a highly polished portfolio of my thoughts. Posts were infrequent and daunting to write. I was also writing for others, not myself. Years later, I realized that nourishing this craft through regular practice was more important to me than publishing something 'finished' every time.
+I kept a blog when I was younger. I approached it as a highly polished portfolio of my thoughts. Posts were infrequent and daunting to write. I wrote for others, not myself. Years later, I realized that nourishing this craft through regular practice was more important to me than publishing a 'finished' product every time.
 
 ## Why write on a personal website? Why not use another service, like Substack?
 Many people seem to document their projects/lives using YouTube, Instagram, Substack, etc. However, these companies own their platforms and thus exert influence on the means of creation. They essentially behave as content incubators. I currently have no plans to make writing a career, and I'm not writing for a broad audience. I want my creativity to flourish without the pressure to commercialize, and I want to keep it exclusive, like a walled garden. I believe I can achieve this by creating and hosting a static website on Github Pages. If I ever want to release my works to a broader audience, I can publish them on a platform.

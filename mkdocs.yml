@@ -10,6 +10,16 @@ theme:
     - search.highlight
     - search.share
     - header.autohide
+    - navigation.indexes
+  nav:
+    - Home: index.md
+    - Blog:
+        - All Posts: blog/index.md
+        - Categories:
+            - OMSCS: blog/categories/omscs.md
+            - Cycling: blog/categories/cycling.md
+            - Projects: blog/categories/projects.md
+        - Tags: tags/index.md
   palette:
     # palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
@@ -31,7 +41,7 @@ font:
   text: Gelasio
   code: Roboto Mono
 plugins:
-  - blog
+  - blog:
   - tags
   - search
 extra:
