@@ -1,2 +1,2 @@
-# Blog
+# The Strava of Intentions
 
