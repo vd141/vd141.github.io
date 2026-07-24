@@ -1,4 +1,4 @@
-# The Strava for Intentions
+# The Strava for Intellectual Pursuits
 
 ## Categories
 

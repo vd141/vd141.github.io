@@ -6,4 +6,4 @@ My goal with the Master's to develop a strong foundation for computing. I am cur
 
 ## Posts
 
-- [Database Management Systems Concepts and Design](../posts/20260724_DBMS.md)
+- [2026-7-24 Database Management Systems Concepts and Design](../posts/20260724_DBMS.md)

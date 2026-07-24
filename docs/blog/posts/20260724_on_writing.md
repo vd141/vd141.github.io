@@ -23,4 +23,4 @@ A learner and a sharer.
 Primarily future me. I would like to look back at all the progress I've made.
 
 ## What kind of writing am I posting here?
-As this site is always a work in progress (much like myself!), some pieces are in their nascent stages and others are closer to being fully developed. This is a place where I document my experiments. I will call it the Strava of intentions. Similarly to how my athletic pursuits have shifted over the years, I can quickly try things and move on when it's time.
+As this site is always a work in progress (much like myself!), some pieces are in their nascent stages and others are closer to being fully developed. This is a place where I document my experiments. I will call it the Strava for Intellectual Pursuits. Similarly to how my athletic pursuits have shifted over the years, I can quickly try things and move on when it's time.
