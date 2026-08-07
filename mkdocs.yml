@@ -49,6 +49,9 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/vd141
       name: GitHub
+    - icon: fontawesome/brands/x-twitter
+      link: https://twitter.com/victorhdinh
+      name: Twitter
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/victor-dinh/
       name: LinkedIn
