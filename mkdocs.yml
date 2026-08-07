@@ -12,7 +12,7 @@ nav:
           - Cycling: blog/categories/cycling.md
           - Projects: blog/categories/projects.md
       - Tags: tags/index.md
-  - Links: links.md
+  - Collections: collections.md
   - About: about.md
 theme:
   name: material

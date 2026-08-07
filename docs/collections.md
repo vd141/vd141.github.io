@@ -1,4 +1,4 @@
-# Links
+# Collections
 
 Inspiration can come from anywhere. Here are some examples of where mine came from.
 
