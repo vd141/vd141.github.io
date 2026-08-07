@@ -3,6 +3,17 @@ site_url: https://vd141.github.io
 copyright: Copyright &copy; 2026 Victor Dinh
 extra_css:
   - stylesheets/extra.css
+nav:
+  - Home: index.md
+  - Blog:
+      - All Posts: blog/index.md
+      - Categories:
+          - OMSCS: blog/categories/omscs.md
+          - Cycling: blog/categories/cycling.md
+          - Projects: blog/categories/projects.md
+      - Tags: tags/index.md
+  - Links: links.md
+  - About: about.md
 theme:
   name: material
   features:
@@ -11,15 +22,6 @@ theme:
     - search.share
     - header.autohide
     - navigation.indexes
-  nav:
-    - Home: index.md
-    - Blog:
-        - All Posts: blog/index.md
-        - Categories:
-            - OMSCS: blog/categories/omscs.md
-            - Cycling: blog/categories/cycling.md
-            - Projects: blog/categories/projects.md
-        - Tags: tags/index.md
   palette:
     # palette toggle for light mode
     - media: "(prefers-color-scheme: light)"

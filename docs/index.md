@@ -4,7 +4,7 @@
 
 ## I write about my interests, which currently include technology and cycling. 
 
-I write to clarify my thoughts.
+I also write to clarify my thoughts.
 
-I'm a student in Georgia Tech's Online Master of Science in Computer Science (OMSCS) program and cycle regularly to train for a sub-20 Old La Honda segment. 
+I'm a student in Georgia Tech's Online Master of Science in Computer Science (OMSCS) program and cycle regularly. Currently training for a sub-20 Old La Honda segment!
 

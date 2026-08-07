@@ -7,3 +7,11 @@
 [data-md-color-scheme="victor"] {
     --md-typeset-a-color: var(--md-primary-fg-color--dark);
 }
+
+.about-photo {
+    float: right;
+    margin: 0 0 1rem 1.5rem;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+}
