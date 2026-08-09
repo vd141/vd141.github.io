@@ -1,4 +1,5 @@
 ---
+title: Database Case Study
 date:
   created: 2026-08-04
 ---

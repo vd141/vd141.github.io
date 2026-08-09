@@ -1,4 +1,5 @@
 ---
+title: On Writing
 date:
   created: 2026-07-24
 ---
