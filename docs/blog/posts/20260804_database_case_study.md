@@ -2,6 +2,8 @@
 title: Database Case Study
 date:
   created: 2026-08-04
+tags:
+  - OMSCS
 ---
 
 # Databases
