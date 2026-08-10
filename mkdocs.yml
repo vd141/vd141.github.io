@@ -47,6 +47,7 @@ plugins:
   - blog:
   - tags
   - search
+  - git-revision-date-localized
 extra:
   social:
     - icon: fontawesome/brands/github

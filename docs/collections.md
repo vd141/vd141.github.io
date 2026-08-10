@@ -8,7 +8,7 @@ This is a curated scrapbook of some things I am consuming. Inspirations, if you 
 
 - [Eric Cheng's website](https://www.chengeric.com/)
 
-- [Qasar Younis's website](qy.co)
+- [Qasar Younis's website](https://www.qy.co)
 
 ## Read
 
