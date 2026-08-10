@@ -12,6 +12,7 @@ nav:
   - About: about.md
 theme:
   name: material
+  language: en
   features:
     - search.suggest
     - search.highlight
@@ -35,9 +36,9 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode
       accent: green
-font:
-  text: Gelasio
-  code: Roboto Mono
+  font:
+    text: Gelasio
+    code: Roboto Mono
 markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
@@ -47,7 +48,9 @@ plugins:
   - blog:
   - tags
   - search
-  - git-revision-date-localized
+  - git-revision-date-localized:
+      type: custom
+      custom_format: "'last updated on' %b %d, %Y"  # Quote literal text for Babel pattern parsing
 extra:
   social:
     - icon: fontawesome/brands/github

@@ -2,50 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://vd141.github.io/</loc>
-         <lastmod>2026-08-09</lastmod>
+         <lastmod>2026-08-10</lastmod>
     </url>
     <url>
          <loc>https://vd141.github.io/about/</loc>
-         <lastmod>2026-08-09</lastmod>
+         <lastmod>2026-08-10</lastmod>
     </url>
     <url>
          <loc>https://vd141.github.io/collections/</loc>
-         <lastmod>2026-08-09</lastmod>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://vd141.github.io/tags/</loc>
+         <lastmod>2026-08-10</lastmod>
     </url>
     <url>
          <loc>https://vd141.github.io/blog/</loc>
-         <lastmod>2026-08-09</lastmod>
-    </url>
-    <url>
-         <loc>https://vd141.github.io/blog/categories/cycling/</loc>
-         <lastmod>2026-08-09</lastmod>
-    </url>
-    <url>
-         <loc>https://vd141.github.io/blog/categories/omscs/</loc>
-         <lastmod>2026-08-09</lastmod>
-    </url>
-    <url>
-         <loc>https://vd141.github.io/blog/categories/projects/</loc>
-         <lastmod>2026-08-09</lastmod>
+         <lastmod>2026-08-10</lastmod>
     </url>
     <url>
          <loc>https://vd141.github.io/blog/2026/07/21/housekeeping/</loc>
-         <lastmod>2026-08-09</lastmod>
+         <lastmod>2026-08-10</lastmod>
     </url>
     <url>
          <loc>https://vd141.github.io/blog/2026/07/24/on-writing/</loc>
-         <lastmod>2026-08-09</lastmod>
+         <lastmod>2026-08-10</lastmod>
     </url>
     <url>
          <loc>https://vd141.github.io/blog/2026/08/04/database-case-study/</loc>
-         <lastmod>2026-08-09</lastmod>
+         <lastmod>2026-08-10</lastmod>
     </url>
     <url>
          <loc>https://vd141.github.io/blog/2026/08/07/supervised-machine-learning-basics/</loc>
-         <lastmod>2026-08-09</lastmod>
+         <lastmod>2026-08-10</lastmod>
     </url>
     <url>
          <loc>https://vd141.github.io/blog/archive/2026/</loc>
-         <lastmod>2026-08-09</lastmod>
+         <lastmod>2026-08-10</lastmod>
     </url>
 </urlset>
