@@ -2,7 +2,7 @@
 
 ![About photo](assets/1D3BDCB1-A088-4A86-B229-6A34A2260074_1_105_c.jpeg){ .about-photo width="25%" }
 
-I'm driven by a curiosity about my own capabilities. I'm inspired by people who are similarly motivated. 
+I'm driven by a curiosity about what I am capable of. I'm inspired by people who are similarly motivated. 
 
 I began my studies in Georgia Tech's Online Master of Science in Computer Science (OMSCS) program in the spring of 2026. After I swore off computer science in my freshman year of college and changed my major to electrical engineering, I'm back. How the tables have turned. I'm interested in using my talents and energy to shape a better world, and I believe a computer science education will help me achieve that. Before my interests shifted to building software, I executed an MBTA pilot project in my first job out of college to evaluate the feasibility of running license plate recognition cameras on public frequent-route buses. Now at my second company, I am responsible for the software integration of a strategic radar. I move between Boston and Mountain View every other year for my work.
 
