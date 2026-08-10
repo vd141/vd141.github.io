@@ -1,5 +1,4 @@
 # Welcome to my website repo!
-___
 What you see here is the source code for my website. Everything that is needed to render my sitepages lives here.
 
 ## To run the site locally:
