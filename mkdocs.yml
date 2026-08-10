@@ -7,11 +7,7 @@ nav:
   - Home: index.md
   - Blog:
       - All Posts: blog/index.md
-      - Categories:
-          - OMSCS: blog/categories/omscs.md
-          - Cycling: blog/categories/cycling.md
-          - Projects: blog/categories/projects.md
-      - Tags: tags/index.md
+      - Tags: tags.md
   - Collections: collections.md
   - About: about.md
 theme:

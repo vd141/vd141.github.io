@@ -1,8 +1,2 @@
 # The Strava for Intellectual Pursuits
 I use Strava to track my progress and record personal reflections about my workouts. Through it, I can observe my training progress over time. Why not do the same with my thoughts?
-
-## Categories
-
-- [OMSCS](categories/omscs.md)
-- [Cycling](categories/cycling.md)
-- [Projects](categories/projects.md)

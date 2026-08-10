@@ -1,6 +1,6 @@
 # Collections
 
-Inspiration can come from anywhere. Here are some examples of where mine came from.
+This is a curated scrapbook of some things I am consuming. Inspirations, if you will.
 
 - [How to do great work](https://www.paulgraham.com/greatwork.html)
 
@@ -13,7 +13,7 @@ Inspiration can come from anywhere. Here are some examples of where mine came fr
 ## Read
 
 - [Criticism of web3 by Eric Cheng](https://web3.chengeric.com/)
-    - I played around with NFTs and cryptocurrencies during the COVID pandemic, along with a few of my college friends. I often wondered what the Web3 hype was all about and struggled to answer that question. Years later, I came across this piece which directly addresses some web3 concerns. The analysis tempers the grandiose claims made by some web3 evangelists.
+    - I played around with NFTs and cryptocurrencies during the COVID pandemic, along with a few of my college friends. I often wondered what the Web3 hype was all about and struggled to answer that question. Years later, I came across this piece which directly addresses some web3 concerns. The analysis counters claims made by some web3 evangelists.
 
 ## Reading List
 
