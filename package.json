@@ -1,0 +1,6 @@
+{
+    "scripts": {
+    "dev": "mkdocs serve",
+    "build": "mkdocs build -d public"
+  }
+}
