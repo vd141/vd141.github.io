@@ -83,3 +83,32 @@ ${\omega}_j := {\omega}_j - \alpha \frac{1}{m} \sum_{i=1}^{m} \left(f_{\vec{\ome
 where $f_{\vec{\omega},b}(\vec{x}^{(i)})$ is the model prediction for training example $i$, and $\vec{x}^{(i)}$ is the feature vector for that example. Note that the inner function $\vec{x}^{(i)}$ and the weights $\vec{\omega}$ are now vectors. Because the weights ${\omega}_j$ are stored in a vector, all the weights are updated simultaneously in each gradient descent iteration.
 
 ### Feature Scaling
+Feature scaling is a technique that can improve gradient descent performance. Given a feature $x_1$ with values ranging from $1-5$ and a feature $x_2$ with values ranging from $1-100$. We can say that $x_1$ has a smaller range of values than $x_2$. In this example, a model will choose smaller weights for features that have large values, and larger weights for features with relatively small values. It follows that $w_1$ has a larger range than $w_2$. When plotting the cost function as a function of $w_1$ and $2_2$, we would see that the algorithm oscillates on the $w_1$ scale for every small step it takes on the $w_2$ scale. This oscillation results in a slower convergence time. To speed up the convergence time, we can scale the features appropriately so that they are on similar scales, reducing the amount of oscillation. 
+
+#### Feature scaling desired outcome
+Recall that the objective of feature scaling is to improve gradient descent performance by scaling features to similar ranges.
+Generally, it is desirable to bound the feature values between -1 and 1. In practice, deviations from this ideal range are acceptable: -3 to 3 and -0.3 to 0.3 are fine. 0 to 3 for $x_1$ is even okay, even when a separate feature $x_2$ is in the range of -2 to 0.5. Situations you might want to rescsale: $x_3$ in the range of -100 to 100, $x_4$ in the range of -0.001 to 0.001. The ranges are too big and too small. In the case of $x_5$ ranging from 98.6 to 105, the range is in-family, but the values themselves are too large. So this feature is a prime candidate for rescaling.
+Feature scaling is almost never harmful, so if it is cheap to do, it should be done.
+
+#### Feature Scaling Techniques
+Assuming the training data values are all nonnegative, a rudimentary technique is to divide each training feature by the maximum value of its feature set (assuming all training features are positive). This bounds each feature between 0 and 1. A more generalizable version of this technique is to rescale each feature by both its minimum and maximum values using $x_{i_{transformed}} = (x_i - x_{imin})/(x_{imax}-x_{imin})$.
+
+Another technique for centering a feature's values near
+ 0 is known as mean normalization. To perform a mean normalization for a particular feature $x_i$, find the mean, $\mu_i$ of the feature and the difference between the maximum and minimum value of that feature. To transform each feature example, subtract the mean and divide the result by the difference: $x_{i_{transformed}} = (x_i - \mu_i)/(x_{imax}-x_{imin})$.
+
+Z-score normalization: The result of this technique is a feature with a mean of 0 and a standard deviation of 1. For a feature, calculate the mean $\mu_1$ and standard deviation $\sigma_1$. Subtract $\mu_1$ from a feature example and divide the result by $\sigma_1$: $x_{i_{transformed}} = (x_i - \mu_i)/\sigma_1$.
+
+When normalizing features, it is important to store the mean and standard deviations. After learning the parameters from the model, we want to apply the model to a dataset it has not yet encountered. The mean and standard deviation are used to normalize the unseen data.
+
+Notably, these techniques do not alter the distribution of the data, only its scale.
+
+### Checking gradient descent for convergence
+Plot the cost function values against the number of iterations that have occurred. This is called a learning curve. This plot can alert you to a poorly chosen learning rage $\alpha$ or a bug in the code. The cost function has likely converged when the learning curve has flattened out. The number of iterations needed for convergence varies by the application. Another way to flag for convergence is by using an $\epsilon$ value, which is the delta of the cost function between two different iterations that we can define to declare convergence. Ng prefers to use a learning curve to observe the behavior as the algorithm converges. 
+
+### Choosing a learning rate
+The learning curve can suggest that the $\alpha$ is too large. If the cost function is oscillating or steadily increasing, $\alpha$ may require a reduction. These behaviors could also suggest that there is a bug in the code, for example if the learning rate term is being added to the weight instead of being subtracted. A functional $\alpha$ results in a steadily decreasing learning curve. A very small $\alpha$ can be used to debug code - if the learning curve is not steadily decreasing, this suggests an error in the code. If there are no errors, $\alpha$ can be increased (but not by too much!) to improve convergence performance. Ng uses threefold scaling factors after a successful attempt with $\alpha$ and adjusts from there.
+
+### Exploratory data analysis
+Before training a model on the training set, we plot each feature data against the target data to spot any relationships.
+
+### Feature engineering
