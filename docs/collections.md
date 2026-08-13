@@ -19,6 +19,7 @@ This is a curated scrapbook of some things I am consuming. Inspirations, if you 
 
 - [The Organization Kid](https://courses.washington.edu/globfut/req%20readings/Brooks.pdf)
 - [Tor Onion Router](https://www.onion-router.net/Publications/tor-design.pdf)
+- [Guide to vectorizing and querying structured data](https://medium.com/@zilliz_learn/an-ultimate-guide-to-vectorizing-and-querying-structured-data-dea570a80c21)
 
 ### Radars
 - [Kalman filter tutorial](https://web.mit.edu/kirtley/kirtley/binlustuff/literature/control/Kalman%20filter.pdf)

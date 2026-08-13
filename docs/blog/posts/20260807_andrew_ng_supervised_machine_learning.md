@@ -83,7 +83,7 @@ ${\omega}_j := {\omega}_j - \alpha \frac{1}{m} \sum_{i=1}^{m} \left(f_{\vec{\ome
 where $f_{\vec{\omega},b}(\vec{x}^{(i)})$ is the model prediction for training example $i$, and $\vec{x}^{(i)}$ is the feature vector for that example. Note that the inner function $\vec{x}^{(i)}$ and the weights $\vec{\omega}$ are now vectors. Because the weights ${\omega}_j$ are stored in a vector, all the weights are updated simultaneously in each gradient descent iteration.
 
 ### Feature Scaling
-Feature scaling is a technique that can improve gradient descent performance. Given a feature $x_1$ with values ranging from $1-5$ and a feature $x_2$ with values ranging from $1-100$. We can say that $x_1$ has a smaller range of values than $x_2$. In this example, a model will choose smaller weights for features that have large values, and larger weights for features with relatively small values. It follows that $w_1$ has a larger range than $w_2$. When plotting the cost function as a function of $w_1$ and $2_2$, we would see that the algorithm oscillates on the $w_1$ scale for every small step it takes on the $w_2$ scale. This oscillation results in a slower convergence time. To speed up the convergence time, we can scale the features appropriately so that they are on similar scales, reducing the amount of oscillation. 
+Feature scaling is a technique that can improve gradient descent performance. Given a feature $x_1$ with values ranging from $1-5$ and a feature $x_2$ with values ranging from $1-100$. We can say that $x_1$ has a smaller range of values than $x_2$. In this example, a model will choose smaller weights for features that have large values, and larger weights for features with relatively small values. It follows that $w_1$ has a larger range than $w_2$. When plotting the cost function as a function of $w_1$ and $2_2$ on a contour plot, we would see that the algorithm oscillates on the $w_1$ scale for every small step it takes on the $w_2$ scale. The contour plot is asymmetric. This oscillation results in a slower convergence time. To speed up the convergence time, we can scale the features appropriately so that they are on similar scales, reducing the amount of oscillation. 
 
 #### Feature scaling desired outcome
 Recall that the objective of feature scaling is to improve gradient descent performance by scaling features to similar ranges.
@@ -112,3 +112,84 @@ The learning curve can suggest that the $\alpha$ is too large. If the cost funct
 Before training a model on the training set, we plot each feature data against the target data to spot any relationships.
 
 ### Feature engineering
+When we have a particular insight about a dataset, we can engineer features by transforming or combining  existing ones to improve the prediction accuracy. For example, frontage (width of a plot of land) and length of a housing plot may be engineered into an area feature (frontage x length) that can be added to the training example, which can then be used to predict price. 
+
+### Polynomial regression (another form of feature engineering)
+If the relationship between a feature and the target
+ is nonlinear, polynomial terms can be engineered from the existing feature to provide a better model fit to the data. For example, squaring, cubing, or taking the root of an existing feature and using it as a new feature can help the model provide more accurate predictions. Here, feature scaling is even more important due to the increased scale of the derived features.
+
+ When gradient descent is applied to a model with polynomials, it tends to emphasize the terms that fit the data best (increases their weights) and deemphasizes the other terms. Less weight value implies less important/correct feature.
+
+ An alternate way of thinking about fitting polynomials to targets is that the best features are actually linear relative to the target. 
+
+With feature engineering, complex functions can be modeled.
+
+## Scikit-learn models
+Scikit-learn has a gradient descent regression model `sklearn.linear_model.SGDRegressor`
+
+- Performs best with normalized inputs
+- `sklearn.preprocessing.StandardScaler` performs z-score normalization, AKA 'standard score'
+
+Code sample using scikit learn below
+```Python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import SGDRegressor
+from sklearn.preprocessing import StandardScaler
+from lab_utils_multi import  load_house_data
+from lab_utils_common import dlc
+np.set_printoptions(precision=2)
+plt.style.use('./deeplearning.mplstyle')
+
+# load the training set
+X_train, y_train = load_house_data()
+X_features = ['size(sqft)','bedrooms','floors','age']
+
+# scale/normalize the training data
+scaler = StandardScaler()
+X_norm = scaler.fit_transform(X_train)
+print(f"Peak to Peak range by column in Raw        X:{np.ptp(X_train,axis=0)}")   
+print(f"Peak to Peak range by column in Normalized X:{np.ptp(X_norm,axis=0)}")
+
+# Create and fit the regression model
+sgdr = SGDRegressor(max_iter=1000)
+sgdr.fit(X_norm, y_train)
+print(sgdr)
+print(f"number of iterations completed: {sgdr.n_iter_}, number of weight updates: {sgdr.t_}")
+
+# View the parameters
+b_norm = sgdr.intercept_
+w_norm = sgdr.coef_
+print(f"model parameters:                   w: {w_norm}, b:{b_norm}")
+print( "model parameters from previous lab: w: [110.56 -21.27 -32.71 -37.97], b: 363.16")
+
+# Make predictions
+# make a prediction using sgdr.predict()
+y_pred_sgd = sgdr.predict(X_norm)
+# make a prediction using w,b. 
+y_pred = np.dot(X_norm, w_norm) + b_norm  
+print(f"prediction using np.dot() and sgdr.predict match: {(y_pred == y_pred_sgd).all()}")
+
+print(f"Prediction on training set:\n{y_pred[:4]}" )
+print(f"Target values \n{y_train[:4]}")
+
+# plot predictions and targets vs original features    
+fig,ax=plt.subplots(1,4,figsize=(12,3),sharey=True)
+for i in range(len(ax)):
+    ax[i].scatter(X_train[:,i],y_train, label = 'target')
+    ax[i].set_xlabel(X_features[i])
+    ax[i].scatter(X_train[:,i],y_pred,color=dlc["dlorange"], label = 'predict')
+ax[0].set_ylabel("Price"); ax[0].legend();
+fig.suptitle("target versus prediction using z-score normalized model")
+plt.show()
+```
+
+## Practice Lab: Linear Regression
+The problem statement is this: Suppose you are the CEO of a restaurant chain and want to expand to new, more profitable cities. Given that you already have restaurants in many cities and profit/population data from those, can you use your data to predict which cities could be good candidates to give your business higher profits?
+
+1. Start by loading the population/profit data for all your existing restaurants.
+2. Explore some of the data, and familiarize yourself with some examples. Verify that the data looks as you expect it to. If it doesn't, perhaps the data is in a different range than you were expecting, the units are different, or maybe there is some bad data. Also verify the data's dimensions. It is important  the data is fit for model-building.
+3. Build plots to visualize the data!
+
+Linear regression refresher: Building a good linear regression model involves selecting the weights that minimize the cost function. So the cost function is necessarily dependent on the weights. Gradient descent is the algorithm that iteratively improves the weight selection. When the gradient descent can no longer improve the weights, the model is considered "trained" and can now make predictions on non-training data. 
+
