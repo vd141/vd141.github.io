@@ -184,12 +184,91 @@ fig.suptitle("target versus prediction using z-score normalized model")
 plt.show()
 ```
 
-## Practice Lab: Linear Regression
+## Linear Regression Practice Lab Lessons Learned
 The problem statement is this: Suppose you are the CEO of a restaurant chain and want to expand to new, more profitable cities. Given that you already have restaurants in many cities and profit/population data from those, can you use your data to predict which cities could be good candidates to give your business higher profits?
 
 1. Start by loading the population/profit data for all your existing restaurants.
 2. Explore some of the data, and familiarize yourself with some examples. Verify that the data looks as you expect it to. If it doesn't, perhaps the data is in a different range than you were expecting, the units are different, or maybe there is some bad data. Also verify the data's dimensions. It is important  the data is fit for model-building.
 3. Build plots to visualize the data!
 
-Linear regression refresher: Building a good linear regression model involves selecting the weights that minimize the cost function. So the cost function is necessarily dependent on the weights. Gradient descent is the algorithm that iteratively improves the weight selection. When the gradient descent can no longer improve the weights, the model is considered "trained" and can now make predictions on non-training data. 
+Linear regression refresher: Building a good linear regression model involves selecting the weights that minimize the cost function. So the cost function is dependent on the weights. Gradient descent improves the weight selection by updating the weights iteratively. It does so by subtracting the product of the learning rate and derivative of the cost function (with respect to the weight) from the previous weight value. When gradient descent can no longer improve the weights, i.e. when there is not a significant difference in cost function between iterations, the model is considered "trained" and can now make predictions on non-training data. 
 
+The lab has you code up the cost function and gradient descent. With vectorized code in mind, I found it was easier to write out my thoughts as comments first, then translate them to vectorized code. My cost function ended up being 3 lines, although it could probably be condensed to 1 (at the cost of readability). 
+
+``` Python
+def compute_cost(x, y, w, b): 
+    """
+    Computes the cost function for linear regression.
+    
+    Args:
+        x (ndarray): Shape (m,) Input to the model (Population of cities) 
+        y (ndarray): Shape (m,) Label (Actual profits for the cities)
+        w, b (scalar): Parameters of the model
+    
+    Returns
+        total_cost (float): The cost of using w,b as the parameters for linear regression
+               to fit the data points in x and y
+    """
+    # number of training examples
+    m = x.shape[0] 
+    
+    # You need to return this variable correctly
+    total_cost = 0
+    
+    ### START CODE HERE ###
+    # x and y are single column vectors
+    # model makes a prediction f_wb(x^(i)) based on an input x^(i)
+    f_wb = w * x + b # f_wb is a column vector of length m, is the model's prediction for each x
+    # cost is the difference between the prediction and true output, squared
+    cost_vec = (f_wb - y) ** 2 # vector (length m) of the cost for each training example
+    # the cost over all predictions and outputs for the feature set are summed and divided by (2m)
+    total_cost = sum(cost_vec) / (2*m)
+    
+    ### END CODE HERE ### 
+
+    return total_cost
+```
+
+```Python
+def compute_gradient(x, y, w, b): 
+    """
+    Computes the gradient for linear regression 
+    Args:
+      x (ndarray): Shape (m,) Input to the model (Population of cities) 
+      y (ndarray): Shape (m,) Label (Actual profits for the cities)
+      w, b (scalar): Parameters of the model  
+    Returns
+      dj_dw (scalar): The gradient of the cost w.r.t. the parameters w
+      dj_db (scalar): The gradient of the cost w.r.t. the parameter b     
+     """
+    
+    # Number of training examples
+    m = x.shape[0]
+    
+    # You need to return the following variables correctly
+    dj_dw = 0
+    dj_db = 0
+    
+    ### START CODE HERE ###
+    
+    # single variable linear regression depends on gradient descent for each weight: w, b
+    # the gradient descent for each weight is calculated using the partial derivative of the cost function with
+    # respect to the weight
+    # the partial derivative with respect to w is: (f_wb - y) * x
+    # the partial derivative with respect to b is: (f_wb - y)
+    # This is absolutely true when there is one training example x, and one target y.
+    # But when there are multiple training examples, the gradient should be based on all of the training examples. 
+    # So we take the average gradient across all training examples: sum(w_gradients)/m and sum(b_gradients)/m
+    
+    f_wb = w * x + b # f_wb is a column vector of length m, is the model's prediction for each x
+    
+    dj_dw = (1 / m) * sum((f_wb - y) * x)
+    dj_db = (1 / m) * sum((f_wb - y))
+
+    
+    ### END CODE HERE ### 
+        
+    return dj_dw, dj_db
+```
+
+After cwriting compute_gradient, the function can now be used iteratively in a gradient descent algorithm. The algorithm should iteratively improve the weights (the cost function should decrease each time). The algorithm is a loop of: calculate gradient, update weight, measure cost. The end condition can be set as a number of iterations or a mimimum cost function delta between successive iterations.
