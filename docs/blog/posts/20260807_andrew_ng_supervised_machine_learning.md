@@ -272,3 +272,11 @@ def compute_gradient(x, y, w, b):
 ```
 
 After cwriting compute_gradient, the function can now be used iteratively in a gradient descent algorithm. The algorithm should iteratively improve the weights (the cost function should decrease each time). The algorithm is a loop of: calculate gradient, update weight, measure cost. The end condition can be set as a number of iterations or a mimimum cost function delta between successive iterations.
+
+## Classification
+Home stretch of the course! Afew a few days of refreshing regression basics, I am excited to get to classification. The course so far has been refreshing. I've been able to explore the topics in more depth than I did in the ML4T class.
+
+Classification predicts discrete categories, while regression predicts real numbers. Here's a question: how can I classify data using what I have learned so far? Well, one way would be to use linear regression to fit the data, then affix a decision boundary to the line. But what if an outlier is added to the training data? This would update the linear regression model. But it would also affect the position of the decision boundary. Is this desirable? No, because the outlier hasn't fundamentally changed what the decision boundary is differentiating. The outlier still belongs in one category, but the degree to which it belongs shouldn't affect the decision boundary. So linear regression isn't ideal for a classification algorithm. Instead, I will look for a better approach. Aha! It's called logistic regression.
+
+### Logistic regression
+Despite having "regression" in the name, logistic regression is used for classification! It is one of the most widely used classification algorithms in the world.
