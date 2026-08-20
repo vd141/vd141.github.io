@@ -12,6 +12,8 @@ This is a curated scrapbook of some things I am consuming. Inspirations, if you 
 
 ## Consumed
 
+- [Kiva Systems: Three Engineers, Hundreds of Robots, One Warehouse](https://spectrum.ieee.org/three-engineers-hundreds-of-robots-one-warehouse)
+    - A story about the power of friendships, circumstances that inspire innovation, innovations that enable novel solutions, building a culture, sourcing talent, enginereing under constraints, and algorithms.
 - [Criticism of web3 by Eric Cheng](https://web3.chengeric.com/)
     - I played around with NFTs and cryptocurrencies during the COVID pandemic, along with a few of my college friends. I often wondered what the Web3 hype was all about and struggled to answer that question. Years later, I came across this piece which directly addresses some web3 concerns. The analysis counters claims made by some web3 evangelists.
 
@@ -29,6 +31,7 @@ This is a curated scrapbook of some things I am consuming. Inspirations, if you 
     - I find myself coming back to this frequently
 - [Creative Nonfiction: Write Truth with Style](https://www.coursera.org/learn/creative-nonfiction-write-truth-with-style)
     - How to live in the mundane
+- [An intuitive explanation of maximum likelihood estimation](https://medium.com/data-science/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1)
 
 ### Radars
 - [Kalman filter tutorial](https://web.mit.edu/kirtley/kirtley/binlustuff/literature/control/Kalman%20filter.pdf)

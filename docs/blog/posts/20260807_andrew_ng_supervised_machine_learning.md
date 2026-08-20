@@ -297,5 +297,59 @@ This particular loss function is derived using a statistical principle called ma
 
 To derive the cost function, simply add up the losses from each training example and divide by the number of training examples.
 
-#### Gradient descent of for logistic regression
-Just like in regression, the weights are updated by subtracting the a product of the learning rate and the gradient of the cost function from the weight's current value. 
+#### Batch gradient descent for logistic regression
+Just like in regression, the weights are updated by subtracting the a product of the learning rate and the gradient of the cost function from the weight's current value.
+$\begin{align*}
+&\text{repeat until convergence:} \; \lbrace \\
+&  \; \; \;w_j = w_j -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial w_j} \tag{1}  \; & \text{for j := 0..n-1} \\ 
+&  \; \; \;  \; \;b = b -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial b} \\
+&\rbrace
+\end{align*}$
+
+ How is the gradient of the cost function calculated in this case? It turns out, the cost function gradient takes a similar form to the one in linear regression. That is, 
+ $\begin{align*}
+\frac{\partial J(\mathbf{w},b)}{\partial w_j}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)})x_{j}^{(i)} \tag{2} \\
+\frac{\partial J(\mathbf{w},b)}{\partial b}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)}) \tag{3} 
+\end{align*}$
+The only difference now is that $(f_{\mathbf{w},b}(\mathbf{x}^{(i)})$ is the sigmoid function, rather than a linear function. The derivation is omitted from this lecture, and can be an exercise for the reader.
+
+``` Python
+def compute_gradient_logistic(X, y, w, b): 
+    """
+    Computes the gradient for logistic regression 
+ 
+    Args:
+      X (ndarray (m,n): Data, m examples with n features
+      y (ndarray (m,)): target values
+      w (ndarray (n,)): model parameters  
+      b (scalar)      : model parameter
+    Returns
+      dj_dw (ndarray (n,)): The gradient of the cost w.r.t. the parameters w. 
+      dj_db (scalar)      : The gradient of the cost w.r.t. the parameter b. 
+    """
+    m,n = X.shape
+    dj_dw = np.zeros((n,))                           #(n,)
+    dj_db = 0.
+
+    for i in range(m):
+        f_wb_i = sigmoid(np.dot(X[i],w) + b)          #(n,)(n,)=scalar, prediction for a training example
+        err_i  = f_wb_i  - y[i]                       #scalar, error for a full training example
+        for j in range(n):
+            dj_dw[j] = dj_dw[j] + err_i * X[i,j]      #scalar, for each weight accumulate product of full training example error and X[i, j] (example for that weight). the gradient of each weight depends on these two quantities
+        dj_db = dj_db + err_i                         # gradient of bias depends only on the error
+    dj_dw = dj_dw/m                                   #(n,)
+    dj_db = dj_db/m                                   #scalar
+        
+    return dj_db, dj_dw 
+```
+
+In gradient descent, the weights are updated by a quantity that depends on the learning rate $\alpha$ and the gradient. The gradient is recalculated for each iteration, and depends on the model's error. For non-bias parameters, the weights depend on the product of the error and training examples. For the bias parameter, the gradient is dependent on the error only. The gradient can be understood as a measure of how far away the weights are from their optimal (minimal error) value. When the gradient is large, the model is far from converging. When the gradient is small or near-zero, the weights are near convergence, or have converged.
+
+### Overfitting
+When a model underfits the data, it can also be said to have high bias.
+
+A model that "generalizes" well is one that fits the training set pretty well (but not perfectly!) and accurately predicts unseen examples.
+
+A model that "overfits" fits the training set extremely well (perfectly or near-perfectly) but does not accurately predict unseen samples. These models are said to have high variance. They are highly sensitive to small changes in the training data.
+
+#### Addressing overfitting with regularization
