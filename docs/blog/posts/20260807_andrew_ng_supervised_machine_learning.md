@@ -345,6 +345,29 @@ def compute_gradient_logistic(X, y, w, b):
 
 In gradient descent, the weights are updated by a quantity that depends on the learning rate $\alpha$ and the gradient. The gradient is recalculated for each iteration, and depends on the model's error. For non-bias parameters, the weights depend on the product of the error and training examples. For the bias parameter, the gradient is dependent on the error only. The gradient can be understood as a measure of how far away the weights are from their optimal (minimal error) value. When the gradient is large, the model is far from converging. When the gradient is small or near-zero, the weights are near convergence, or have converged.
 
+#### Logistic Regression with Scikit-Learn
+``` Python
+import numpy as np
+
+# dataset
+X = np.array([[0.5, 1.5], [1,1], [1.5, 0.5], [3, 0.5], [2, 2], [1, 2.5]])
+y = np.array([0, 0, 0, 1, 1, 1])
+
+from sklearn.linear_model import LogisticRegression
+
+# fit the model
+lr_model = LogisticRegression()
+lr_model.fit(X, y)
+
+# make predictions
+y_pred = lr_model.predict(X)
+
+print("Prediction on training set:", y_pred)
+
+# calculate accuracy
+print("Accuracy on training set:", lr_model.score(X, y))
+```
+
 ### Overfitting
 When a model underfits the data, it can also be said to have high bias.
 
@@ -352,4 +375,27 @@ A model that "generalizes" well is one that fits the training set pretty well (b
 
 A model that "overfits" fits the training set extremely well (perfectly or near-perfectly) but does not accurately predict unseen samples. These models are said to have high variance. They are highly sensitive to small changes in the training data.
 
-#### Addressing overfitting with regularization
+#### 3 techniques to address overfitting
+The goal of these techniques is to reduce the variance, which will help the model generalize better.
+
+Increasing the training set size will prevent the model from overfitting a few pieces of data. This may not always be possible in situations where data is scarce.
+
+Using a subset of existing features will also reduce overfitting. The subset to focus on would be those that are most predictive of the output. This technique is called feature selection. The drawback of this method is that some discarded features could be uesful in predicting the output. There do exist algorithms that automatically select the most appropriate features for prediction tasks.
+
+Regularization is a technique that diminishes (but does not totally eliminate) the impact that certain features have on the prediction. Instead of eliminating a particular feature by setting all of its parameters to zero, regularization tunes the examples such that the weights for those features end up being very small. This allows for higher-order models to be used without encountering high variance. In practice, the w weights are typically regularized, as opposed to regularizing b. Regularizing b often has little effect on reducing variance. Regularization is also used in neural networks!
+
+#### Overfitting Lab
+- Polynomials of excessively high degree tend to overfit
+- conversely, polynomials of excessively low degree tend to underfit
+- extreme examples can increase overfitting (assuming they are outliers)
+- nominal examples can reduce overfitting
+- fitting a line to smaller datasets can be done without pure gradient descent (implementation method not mentioned, however)
+
+#### Modifying the cost function to accomodate regularization
+Simply add the weights that you want to minimize to the cost function, and multiply them by relatively large coefficients. The exact quantity doesn't matter as much, but by putting large coefficients in front of these weights, the cost function penalizes these weights heavily when they are large. Assuming that the weights being penalized correspond to higher-order terms, regularization effectively makes the model behave as a lower-order model, thus reducing overfitting.
+
+To generalize this technique, such as in instances where there are many features and we don't know which ones to regularize, we can simply regularize all of them by adding a regularization term to the cost function that looks like $\frac{\lambda}{2m} \sum\limits_{j = 1}^{n} (w_j^2)$, where $m$ is the number of training examples, $n$ is the number of weights, and $\lambda$ is a hyperparameter that controls the strength of the regularization penalty. When $\lambda$ is large, the cost function penalizes the weights so much that the only weight left over is the constant bias term, $b$. When $\lambda$ is very small, the regularization term is effectively nullified, and high variance can exist in the model. The $\frac{\lambda}{2m}$ scaling factor makes it likelier for lambda to work with larger datasets (larger $m$) as it did for smaller ones.
+
+#### gradient descent with regularization
+The only difference between the gradients for non-regularized and regularized models is that the gradient for $\mathbf{w}$ includes a new term: the partial derivative of the regularization term with respect to $w_j$, which turns out to be $\frac{\lambda}{m}w_j$. As stated previously, $b$ is not typically regularized, so in most circumstances there is no need to add a regularization term to its gradient in the regularized case, making it identical to the non-regularized gradient.
+
