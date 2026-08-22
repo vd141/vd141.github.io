@@ -394,8 +394,383 @@ Regularization is a technique that diminishes (but does not totally eliminate) t
 #### Modifying the cost function to accomodate regularization
 Simply add the weights that you want to minimize to the cost function, and multiply them by relatively large coefficients. The exact quantity doesn't matter as much, but by putting large coefficients in front of these weights, the cost function penalizes these weights heavily when they are large. Assuming that the weights being penalized correspond to higher-order terms, regularization effectively makes the model behave as a lower-order model, thus reducing overfitting.
 
-To generalize this technique, such as in instances where there are many features and we don't know which ones to regularize, we can simply regularize all of them by adding a regularization term to the cost function that looks like $\frac{\lambda}{2m} \sum\limits_{j = 1}^{n} (w_j^2)$, where $m$ is the number of training examples, $n$ is the number of weights, and $\lambda$ is a hyperparameter that controls the strength of the regularization penalty. When $\lambda$ is large, the cost function penalizes the weights so much that the only weight left over is the constant bias term, $b$. When $\lambda$ is very small, the regularization term is effectively nullified, and high variance can exist in the model. The $\frac{\lambda}{2m}$ scaling factor makes it likelier for lambda to work with larger datasets (larger $m$) as it did for smaller ones.
+To generalize this technique, such as in instances where there are many features and we don't know which ones to regularize, we can simply regularize all of them. This is implemented by adding a regularization term to the cost function that looks like $\frac{\lambda}{2m} \sum\limits_{j = 1}^{n} (w_j^2)$, where $m$ is the number of training examples, $n$ is the number of weights, and $\lambda$ is a hyperparameter that controls the strength of the regularization penalty. When $\lambda$ is large, the cost function penalizes the weights so much that the only weight left over is the constant bias term, $b$. When $\lambda$ is very small, the regularization term is effectively nullified, and high variance can exist in the model. The $\frac{\lambda}{2m}$ scaling factor makes it likelier for lambda to work with larger datasets (larger $m$) as it did for smaller ones.
 
 #### gradient descent with regularization
 The only difference between the gradients for non-regularized and regularized models is that the gradient for $\mathbf{w}$ includes a new term: the partial derivative of the regularization term with respect to $w_j$, which turns out to be $\frac{\lambda}{m}w_j$. As stated previously, $b$ is not typically regularized, so in most circumstances there is no need to add a regularization term to its gradient in the regularized case, making it identical to the non-regularized gradient.
 
+#### Final lab: building a logistic regression model from scratch
+1. Visualize the shape of the data by viewing dimensions of data, peeking at values, plotting features vs. output
+``` Python
+import numpy as np
+import matplotlib.pyplot as plt
+from utils import *
+import copy
+import math
+
+%matplotlib inline
+# load dataset
+X_train, y_train = load_data("data/ex2data1.txt")
+
+print("First five elements in X_train are:\n", X_train[:5])
+print("Type of X_train:",type(X_train))
+
+print("First five elements in y_train are:\n", y_train[:5])
+print("Type of y_train:",type(y_train))
+
+print ('The shape of X_train is: ' + str(X_train.shape))
+print ('The shape of y_train is: ' + str(y_train.shape))
+print ('We have m = %d training examples' % (len(y_train)))
+
+# Plot examples
+plot_data(X_train, y_train[:], pos_label="Admitted", neg_label="Not admitted")
+
+# Set the y-axis label
+plt.ylabel('Exam 2 score') 
+# Set the x-axis label
+plt.xlabel('Exam 1 score') 
+plt.legend(loc="upper right")
+plt.show()
+```
+
+2. Implement the sigmoid function. The input to the sigmoid function can be a scalar or a vector. To handle vectors, I used the np.power method to calculate the exponential in the denominator.
+``` Python
+def sigmoid(z):
+    """
+    Compute the sigmoid of z
+
+    Args:
+        z (scalar or ndarray): A scalar or numpy array of any size.
+
+    Returns:
+        g (scalar or ndarray): sigmoid(z), with the same shape as z if z is a numpy array.
+         
+    """
+          
+    ### START CODE HERE ### 
+    g = 1 / (1 + np.power(np.e,-z))
+    ### END SOLUTION ###  
+    
+    return g
+```
+
+3. Implement the cost function. I broke this down into three lines of code, each being a component of the cost: linear model output, $g(z)$, loss, and cost. The linear model output is obtaind by calculating the dot product of the training examples and the weights and adding the bias term. $g(z)$, otherwise known as the sigmoid output, is simply the result of the linear model output when it is fed into the sigmoid function that I wrote in the previous step. To calculate the loss, I used the binary cross-entropy loss (log loss). Notably, the natural log function is typically used, rather than the base 10 log function. Functionally speaking, gradient descent will work with either implementation, but natural log is preferred because it simplifies the gradient calculation. Using base 10 log introduces a scaling factor that clutters the derivation.
+``` Python
+def compute_cost(X, y, w, b, *argv):
+    """
+    Computes the cost over all examples
+    Args:
+      X : (ndarray Shape (m,n)) data, m examples by n features
+      y : (ndarray Shape (m,))  target value 
+      w : (ndarray Shape (n,))  values of parameters of the model      
+      b : (scalar)              value of bias parameter of the model
+      *argv : unused, for compatibility with regularized version below
+    Returns:
+      total_cost : (scalar) cost 
+    """
+
+    m, n = X.shape
+    
+    ### START CODE HERE ###
+    
+    # total cost is the average loss calculation for each training example
+    # the loss function input is the output of the sigmoid function
+    # the output of the sigmoid function depends on the output of the linear model
+    linear_model = np.dot(X, w) + b
+    
+    # let g be the sigmoid output
+    g = sigmoid(linear_model)
+    
+    # the loss for each example in g depends on the difference between g and the actual value in y
+    loss = (-y * np.log(g)) - ((1 - y) * np.log(1 - g))
+        
+    # total cost is the sum of all losses divided by the number of training examples
+    total_cost = sum(loss) / m
+    
+    ### END CODE HERE ### 
+
+    return total_cost
+```
+
+4. Implement the gradient for logistic regression
+The skeleton code for this section uses a double nested for loopm, but I opted to vectorize when possible. Like the cost function calculation, the gradient depends on the difference between the sigmoid output of the linear model (prediction delta) and the true label. dj_db was calculable using vectorization. Each dj_dw value (one for each weight) was obtained by calculating the average value of [the product of each prediction delta and its input feature value], for all feature examples. This was the only part of the code that requried a for loop. 
+``` Python
+def compute_gradient(X, y, w, b, *argv): 
+    """
+    Computes the gradient for logistic regression 
+ 
+    Args:
+      X : (ndarray Shape (m,n)) data, m examples by n features
+      y : (ndarray Shape (m,))  target value 
+      w : (ndarray Shape (n,))  values of parameters of the model      
+      b : (scalar)              value of bias parameter of the model
+      *argv : unused, for compatibility with regularized version below
+    Returns
+      dj_dw : (ndarray Shape (n,)) The gradient of the cost w.r.t. the parameters w. 
+      dj_db : (scalar)             The gradient of the cost w.r.t. the parameter b. 
+    """
+    m, n = X.shape
+    dj_dw = np.zeros(w.shape)
+    dj_db = 0.
+
+#     ### START CODE HERE ### 
+#     for i in range(m):
+#         z_wb = None
+#         for j in range(n): 
+#             z_wb += None
+#         z_wb += None
+#         f_wb = None
+        
+#         dj_db_i = None
+#         dj_db += None
+        
+#         for j in range(n):
+#             dj_dw[j] = None
+            
+#     dj_dw = None
+#     dj_db = None
+    ### END CODE HERE ###
+    
+    # not sure why for loop is being used here. trying vectorization instead
+    linear_model = np.dot(X, w) + b
+    g = sigmoid(linear_model)
+    dj_db = (1 / m) * sum(g - y)
+    for j in range(n):
+        dj_dw[j] = (1 / m) * sum((g - y) * (X[:,j]))
+        
+    return dj_db, dj_dw
+```
+
+5. Using the weights and predictions from gradient descent, plot the results
+The weights that gradient descent converges on are the parameters for the decision boundary. Gradient descent code, which was provided, is included here.
+
+``` Python
+def gradient_descent(X, y, w_in, b_in, cost_function, gradient_function, alpha, num_iters, lambda_): 
+    """
+    Performs batch gradient descent to learn theta. Updates theta by taking 
+    num_iters gradient steps with learning rate alpha
+    
+    Args:
+      X :    (ndarray Shape (m, n) data, m examples by n features
+      y :    (ndarray Shape (m,))  target value 
+      w_in : (ndarray Shape (n,))  Initial values of parameters of the model
+      b_in : (scalar)              Initial value of parameter of the model
+      cost_function :              function to compute cost
+      gradient_function :          function to compute gradient
+      alpha : (float)              Learning rate
+      num_iters : (int)            number of iterations to run gradient descent
+      lambda_ : (scalar, float)    regularization constant
+      
+    Returns:
+      w : (ndarray Shape (n,)) Updated values of parameters of the model after
+          running gradient descent
+      b : (scalar)                Updated value of parameter of the model after
+          running gradient descent
+    """
+    
+    # number of training examples
+    m = len(X)
+    
+    # An array to store cost J and w's at each iteration primarily for graphing later
+    J_history = []
+    w_history = []
+    
+    for i in range(num_iters):
+
+        # Calculate the gradient and update the parameters
+        dj_db, dj_dw = gradient_function(X, y, w_in, b_in, lambda_)   
+
+        # Update Parameters using w, b, alpha and gradient
+        w_in = w_in - alpha * dj_dw               
+        b_in = b_in - alpha * dj_db              
+       
+        # Save cost J at each iteration
+        if i<100000:      # prevent resource exhaustion 
+            cost =  cost_function(X, y, w_in, b_in, lambda_)
+            J_history.append(cost)
+
+        # Print cost every at intervals 10 times or as many iterations if < 10
+        if i% math.ceil(num_iters/10) == 0 or i == (num_iters-1):
+            w_history.append(w_in)
+            print(f"Iteration {i:4}: Cost {float(J_history[-1]):8.2f}   ")
+        
+    return w_in, b_in, J_history, w_history #return w and J,w history for graphing
+```
+
+``` Python
+np.random.seed(1)
+initial_w = 0.01 * (np.random.rand(2) - 0.5)
+initial_b = -8
+
+# Some gradient descent settings
+iterations = 10000
+alpha = 0.001
+
+w,b, J_history,_ = gradient_descent(X_train ,y_train, initial_w, initial_b, 
+                                   compute_cost, compute_gradient, alpha, iterations, 0)
+
+plot_decision_boundary(w, b, X_train, y_train)
+# Set the y-axis label
+plt.ylabel('Exam 2 score') 
+# Set the x-axis label
+plt.xlabel('Exam 1 score') 
+plt.legend(loc="upper right")
+plt.show()
+```
+
+6. Make a prediction baesd on the learned weights
+
+``` Python
+def predict(X, w, b): 
+    """
+    Predict whether the label is 0 or 1 using learned logistic
+    regression parameters w
+    
+    Args:
+      X : (ndarray Shape (m,n)) data, m examples by n features
+      w : (ndarray Shape (n,))  values of parameters of the model      
+      b : (scalar)              value of bias parameter of the model
+
+    Returns:
+      p : (ndarray (m,)) The predictions for X using a threshold at 0.5
+    """
+    # number of training examples
+    m, n = X.shape   
+    p = np.zeros(m)
+   
+    ### START CODE HERE ### 
+    # Loop over each example
+    # feed each example through f(g(z)). in other words, put it through the linear model, 
+    # then put the output of the linear model to the sigmoid function for the prediction
+#     for i in range(m):   
+#         z_wb = 0
+#         # Loop over each feature
+#         for j in range(n): 
+#             # Add the corresponding term to z_wb
+#             z_wb += X[i][j] * w[j]
+        
+#         # Add bias term 
+#         z_wb += b
+        
+#         # Calculate the prediction for this example
+#         f_wb = sigmoid(z_wb)
+
+#         # Apply the threshold
+#         p[i] = (f_wb >= 0.5)
+        
+    z_wb = np.dot(X, w) + b
+    f_wb = sigmoid(z_wb)
+    p = (f_wb >= 0.5)
+        
+    ### END CODE HERE ### 
+    return p
+
+# Test your predict code
+np.random.seed(1)
+tmp_w = np.random.randn(2)
+tmp_b = 0.3    
+tmp_X = np.random.randn(4, 2) - 0.5
+
+tmp_p = predict(tmp_X, tmp_w, tmp_b)
+print(f'Output of predict: shape {tmp_p.shape}, value {tmp_p}')
+
+# UNIT TESTS        
+predict_test(predict)
+```
+
+7. Tying it all together with regularized logistic regression
+Given a dataset containing test result data for a microchip, and a determination (pass, failed) of the microchip after QA analysis, we want to predict whether a microchip with test results will pass or fail. 
+
+Plotting the data reveals that the potential decision boundary would be ill-served with a linear model.
+
+So to increase our chances of finding a better model, we construct new features from each data point.
+
+Given two features, $x_1$ and $x_2$, we map the features into all polynomial terms of these features of a 6th order polynomial. 
+
+
+$$\mathrm{map\_feature}(x) = 
+\left[\begin{array}{c}
+x_1\\
+x_2\\
+x_1^2\\
+x_1 x_2\\
+x_2^2\\
+x_1^3\\
+\vdots\\
+x_1 x_2^5\\
+x_2^6\end{array}\right]$$
+
+The function that does this was provided in the lab. The feature mapping function increased the number of features from 2 to 27. 
+
+The intent with this feature mapping is to improve the model's ability to fit the data. Without regularization, the model is susceptible to overfitting/high variance.
+
+To implement regularization, an extra term is added to the cost function for the weights in $\vec{w}$. $b$ doesn't need a regularized term, since it purportedly has little effect on the outcome. 
+
+``` Python
+def compute_cost_reg(X, y, w, b, lambda_ = 1):
+    """
+    Computes the cost over all examples
+    Args:
+      X : (ndarray Shape (m,n)) data, m examples by n features
+      y : (ndarray Shape (m,))  target value 
+      w : (ndarray Shape (n,))  values of parameters of the model      
+      b : (scalar)              value of bias parameter of the model
+      lambda_ : (scalar, float) Controls amount of regularization
+    Returns:
+      total_cost : (scalar)     cost 
+    """
+
+    m, n = X.shape
+    
+    # Calls the compute_cost function that you implemented above
+    cost_without_reg = compute_cost(X, y, w, b) 
+    
+    # You need to calculate this value
+    reg_cost = 0.
+    
+    ### START CODE HERE ###
+    
+    reg_cost = (lambda_ / (2 * m)) * sum(w ** 2)
+    
+    ### END CODE HERE ### 
+    
+    # Add the regularization cost to get the total cost
+    total_cost = cost_without_reg + reg_cost
+
+    return total_cost
+```
+
+For the gradient, the update is similar:
+
+``` Python
+def compute_gradient_reg(X, y, w, b, lambda_ = 1): 
+    """
+    Computes the gradient for logistic regression with regularization
+ 
+    Args:
+      X : (ndarray Shape (m,n)) data, m examples by n features
+      y : (ndarray Shape (m,))  target value 
+      w : (ndarray Shape (n,))  values of parameters of the model      
+      b : (scalar)              value of bias parameter of the model
+      lambda_ : (scalar,float)  regularization constant
+    Returns
+      dj_db : (scalar)             The gradient of the cost w.r.t. the parameter b. 
+      dj_dw : (ndarray Shape (n,)) The gradient of the cost w.r.t. the parameters w. 
+
+    """
+    m, n = X.shape
+    
+    dj_db, dj_dw = compute_gradient(X, y, w, b)
+
+    ### START CODE HERE ###     
+    
+    dj_dw += (lambda_ / m) * w
+        
+    ### END CODE HERE ###         
+        
+    return dj_db, dj_dw
+```
+
+It is after this step that gradient descent can be used to learn the weights. Once the weights have been learned, they can be used to plot the decision boundary and predict the inputs.
+
+And that concludes the topics covered in this course! I had a lot of fun learning regression and classification basics and I am excited to continue on to Advanced Learning Algorithms. 

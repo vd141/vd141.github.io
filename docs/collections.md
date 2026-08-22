@@ -42,3 +42,7 @@ This is a curated scrapbook of some things I am consuming. Inspirations, if you 
     - What are sockets and how do you program them in C?
 - [GIOS project 1 notes](https://gist.github.com/nycdavid/748da176af8d4e1330d6dae3c476a925)
     - easing the blow of my first operating systems class
+
+## Datasets
+- [NAIRR Pilot Open Data](https://nairrpilot.org/pilotresources)
+    - Datasets compiled from DoD, DoE, NASA, NOAA, NIH, USDA, USGS, and more
