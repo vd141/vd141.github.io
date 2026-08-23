@@ -6,5 +6,32 @@ tags:
   - Notes
   - Machine Learning
 ---
-After completing the Supervised Machine Learning course as part of the Machine Learning Specialization taught by Andrew Ng on Coursera, I am now working on the Advanced Learning Algorithms course, which covers neural networks, training, and decision trees. I coded a decision tree as part of an assignment and read about neural networks in ML4T, so I am excited to learn from Andrew Ng's perspective and get some hands-on experience with neural networks.
+
+## Foreword
+After completing the Supervised Machine Learning course as part of the Machine Learning Specialization taught by Andrew Ng on Coursera, I am now working on the Advanced Learning Algorithms course, which covers neural networks, training, and decision trees, as well as how to build a practical machine learning system. I coded a decision tree as part of an assignment and read about neural networks in ML4T, so I am excited to learn from Andrew Ng's perspective and get some hands-on experience with neural networks.
+
+## Neural Network History
+The original motivation for neural networks (NN) was to mimic, with software, how the human/biological brain learns and thinks. Today, NN, also known as artificial neural networks (ANN), have become very different from how we think the brain works and learns. Some of the biological motivations still remain in the way we think about ANN or computed NN today.
+
+NN was first invented in the 50's. NN were then used in the 80's an early 90's to recognize handwritten postal codes for mail routing and dollar figures in handwritten checks. The fell out of favor, and experienced a resurgence in popularity in the mid 2000's. It was also rebranded into "deep learning". Since then, neural networks have revolutionized many application areas. The first area that deep learning had a significant impact on was speech recognition systems (Li Deng and Geoff Hinton). Next, the technology made inroads to computer vision, with ImageNet being a milestone enabler for future research in the domain. The next "era" of deep learning became text processing or natural language processing (NLP). Nowadays, NN are used in climate change, medical imaging, online advertising, product recommendations, and many application areas of machine learning.
+
+Neural networks were initially constructed to mimic the present understanding of the human brain. Thoughts travel through the neurons in the brain as electrical signals. A neuron gathers electrical signals through its dendrites, then sends its output to another neuron via its axon. It is this simplified model of the neuron that the neural network was based on, but they differ in that multiple neurons are simulated at once, accept the inputs, and collectively output a number. Ng caveats that biological understanding of the brain is limited, and neuroscientists continue to discover new things about the brain. The deep neural networks nowadays have been built up from engineering best practices, and any semblance of these to biological models of the brain is speculative. So mimicking current brain models is said to be unlikely to yield raw intelligence.
+
+## Neural Networks Today
+Why have deep neural networks exploded in popularity? As datasets were getting larger and larger, it was getting difficult to scale the performance of traditional learning algorithms like logistic and linear regression. Researchers realized that as neural network sizes scaled up, performance increased. For "big data" applications, larger neural networks enabled performance on use cases such as speech recognition, image recognition, natural language parsing, etc. Computing deep neural networks is also why processing, or "compute", specifically GPU processing is in such high demand.
+
+## From Logistic Regressions to a Neurons
+Suppose we are trying to predict a category based on numerical data. In logistic regression, the input would be the numerical data and the output would be the category. In a neural network, the output is called an activation, which is a term that comes from neuroscience. The activation would ouput a probability of the input belonging to a category, just like a logistic regression does.
+
+## Talkin' 'bout Architecture (of a Neural Network)
+On the opposite ends of the network are the input layer and the output layer. The input layer is the multifeatured data. The output layer is the prediction. In the classification case, it is the probability of the input layer being of a certain category. In between the input and outer layer are "hidden" layers, which each contain multiple neurons. A "hidden" layer is called such because the data in the neurons is hidden, unlike the data in the training set. In a layer, each neuron depends on some combination of the activations from the previous layer. The first layer depends on the input layer. The output layer depends on some combination of activations from the previous layer and outputs a probability. The neural network learns which activations from the previous layer contribute most to each neuron in the next layer. One conception of these hidden layers is that they are the features that the model has created from the previous layer. A neural network model with many hidden layers has essentially "engineered" or "learned" features of features. This is useful because engineered features can predict better than their constituent features can. It also eases the burden of creating/selecting features from the practitioner.
+
+The activations emitting from a layer can be understood as a vector of activations. 
+
+When building a neural network, a decision is made on how many layers the neural network will have as well as how many neurons each layer will contain. These decisions will affect the performance of the model. Tradeoffs will be discussed later in the course.
+
+A multilayer perceptron is another way of describing a multilayer neural network.
+
+## How do neural networks identify a person in a photo?
+
 

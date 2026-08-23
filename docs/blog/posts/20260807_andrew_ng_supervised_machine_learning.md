@@ -774,3 +774,6 @@ def compute_gradient_reg(X, y, w, b, lambda_ = 1):
 It is after this step that gradient descent can be used to learn the weights. Once the weights have been learned, they can be used to plot the decision boundary and predict the inputs.
 
 And that concludes the topics covered in this course! I had a lot of fun learning regression and classification basics and I am excited to continue on to Advanced Learning Algorithms. 
+
+## Areas for Further Exploration
+I realized there were a few areas for me to dive deeper into while learning from the lectures. Some fundamentals could be refreshed/learned. Some derivation details were left out, as well as fundamental statistical ideas, such as maximum likelihood estimation.
