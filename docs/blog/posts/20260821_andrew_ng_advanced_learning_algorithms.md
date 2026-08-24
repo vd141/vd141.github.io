@@ -136,3 +136,5 @@ print(a1)
 alog = sigmoidnp(np.dot(set_w,X_train[0].reshape(1,1)) + set_b)
 print(alog)
 ```
+
+8/24 update: I'm taking GIOS this semester, and class materials were just released! So this is a reminder to future me to come back to this: https://www.coursera.org/learn/advanced-learning-algorithms/lecture/rJMKC/inference-in-code
