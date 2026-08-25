@@ -13,7 +13,8 @@ This is a curated scrapbook of some things I am consuming. Inspirations, if you 
 - [Shreyans Bhansali's website](https://shreyans.org/)
 
 ## Consumed
-
+- [What I learned at Venmo](https://shreyans.org/venmo)
+    - "While recruiting, they were constantly on the hunt for that special something that pointed to immense potential. What cool stuff have they built in their own time? What are their hobbies? Are they left-handed? If you threw them in a tiger pit, would they stand a chance?"
 - [Learn to Implement Papers: Beginner's Guide](https://pub.towardsai.net/deep-learning-d44474891d2c)
     - An insightful high-level overview about recreating papers. It highlights the value of recreating older, highly-cited, seminal works: exposure to fundamental concepts, highly reproducible, relative simplicity. It also provides a brief analysis of each paper's sections, highlighting which areas to focus on/skim. 
     - A link at the bottom of the post references a longer version which contains how the author used this process on the original word2vec paper.
