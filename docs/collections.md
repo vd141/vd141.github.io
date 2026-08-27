@@ -13,6 +13,8 @@ This is a curated scrapbook of some things I am consuming. Inspirations, if you 
 - [Shreyans Bhansali's website](https://shreyans.org/)
 
 ## Consumed
+- [The Connections That Turned a Precocious Teen Into the Fallen ‘Nostradamus of AI’](https://www.wsj.com/tech/ai/situational-awareness-leopold-aschenbrenner-ai-fund-4dbb00a4?mod=hp_lead_pos7)
+    - This is where I first became aware of Leopold Aschenbrenner. Since then, I've been having a lot of fun reading through the thought pieces he and his friends have created.
 - [What I learned at Venmo](https://shreyans.org/venmo)
     - "While recruiting, they were constantly on the hunt for that special something that pointed to immense potential. What cool stuff have they built in their own time? What are their hobbies? Are they left-handed? If you threw them in a tiger pit, would they stand a chance?"
 - [Learn to Implement Papers: Beginner's Guide](https://pub.towardsai.net/deep-learning-d44474891d2c)
@@ -32,6 +34,8 @@ This is a curated scrapbook of some things I am consuming. Inspirations, if you 
 
 ## To be Consumed
 
+- [How to make friends over the internet](https://guzey.com/how-to-make-friends-over-the-internet/)
+- [Writing advice](https://guzey.com/writing-advice/)
 - [Steve Yegge's Google Platform Rant](https://gist.github.com/chitchcock/1281611)
 - [10 Ways to Be Data Illiterate (And How to Avoid Them)](https://jxnl.co/writing/2024/06/02/10-ways-to-be-data-illiterate-and-how-to-avoid-them/)
 - [How to Interview and Hire ML/AI Engineers](https://eugeneyan.com/writing/how-to-interview/)

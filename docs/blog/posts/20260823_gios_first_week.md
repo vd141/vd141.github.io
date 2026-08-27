@@ -499,90 +499,230 @@ A toy shop metaphor will be used when describing the operating system.
 
 REMIMDER: READ PIAZZA POSTS
 
-## P1L2 Playlist
+## P1L2 Playlist: OS Components, Abstractions, Arbitrations, and System Calls
 Dipping the toe in the water!
 
 What is an operating system and what role does it play in computers?
-    - it's a piece of software that abstracts (simplifies conceptually) and arbitrates (manages) the underlying hardware
-    - it offers many abstractions and arbitrations for the various underlying hardware systems
-    - how does it manage and arbitrate the underlying hardware?
-        - it directs operational resources, which include CPU, memory, and peripheral devices
-        - it enforces working policies, such as fair resource access, limits to resource usage with respect to processes
-        - manages the difficult of complex tasks by abstracting hardware details. system calls are such an abstraction
-    - what are the underlying hardware pieces of a computer system? all of these will be used by multiple applications, except in some specific environments like embedded platforms or sensors
-        - processor (1 or more). today's CPUs have multiple cores (processing element)
-        - main memory
-        - network interconnects, such as ethernet port or wifi card
-        - graphics processing cards (GPU)
-        - storage devices such as HDD, SSD, flash USB drives
-    - what kind of applications use these resources?
-        - on a client computer, this could be a browser, text editor, video conferencing apps
-        - on a data center server, this could be a database server, web server, a file storage system, a computationally intensive simulation, etc.
-        - an os is the software that sits between the hardware and the application software
-    - what kind of hardware complexity does the operating system hide?
-        - an example would be disk sectors or blocks when saving output of a computation in you program
-            - it manages a higher level abstraction called a file, which has read and write functions
-        - another example would be the bits and packets that are sent after receiving a request from a client
-            - Os abstracts this into a send/receive socket
-    - how does the OS manage the underlying hardware?
-        - decides which and how many of the hardware resources to use
-        - for example, it decides how much memory to use for an application, and schedules application tasks on the CPU
-        - it also decides when the various applications get to access the hardware
-        - also provides isolation and protection, meaning that the various applications that are using the same hardware resources don't interfere with each other. for example, the os would allocate certain addresses in memory to specific applications
-        - managing hardware is also important on devices that were once considered embedded devices, such as our phones. 
-    - the os hides hardware details from the application, and has policies that govern how applications may interact with the underlying hardware
-    - is it part of the operating system or not?
-        - part of os:
-            - device driver
-            - file system
-            - scheduler
-        - not part of os:
-            - file editor (application)
-            - cache memory (hardware)
-            - web browser (application)
-    - is it an abstraction or arbitration?
-        - arbitration
-            - distributing memory between multiple processes
-        - abstraction
-            - supporting different types of speakers (applications don't need to worry about speaker details)
-            - interchangeable access of hard disk or ssd (application doesn't need to worry about storage details)
+
+- it's a piece of software that abstracts (simplifies conceptually) and arbitrates (manages) the underlying hardware
+- it offers many abstractions and arbitrations for the various underlying hardware systems
+- how does it manage and arbitrate the underlying hardware?
+    - it directs operational resources, which include CPU, memory, and peripheral devices
+    - it enforces working policies, such as fair resource access, limits to resource usage with respect to processes
+    - manages the difficult of complex tasks by abstracting hardware details. system calls are such an abstraction
+- what are the underlying hardware pieces of a computer system? all of these will be used by multiple applications, except in some specific environments like embedded platforms or sensors
+    - processor (1 or more). today's CPUs have multiple cores (processing element)
+    - main memory
+    - network interconnects, such as ethernet port or wifi card
+    - graphics processing cards (GPU)
+    - storage devices such as HDD, SSD, flash USB drives
+- what kind of applications use these resources?
+    - on a client computer, this could be a browser, text editor, video conferencing apps
+    - on a data center server, this could be a database server, web server, a file storage system, a computationally intensive simulation, etc.
+    - an os is the software that sits between the hardware and the application software
+- what kind of hardware complexity does the operating system hide?
+    - an example would be disk sectors or blocks when saving output of a computation in you program
+        - it manages a higher level abstraction called a file, which has read and write functions
+    - another example would be the bits and packets that are sent after receiving a request from a client
+        - Os abstracts this into a send/receive socket
+- how does the OS manage the underlying hardware?
+    - decides which and how many of the hardware resources to use
+    - for example, it decides how much memory to use for an application, and schedules application tasks on the CPU
+    - it also decides when the various applications get to access the hardware
+    - also provides isolation and protection, meaning that the various applications that are using the same hardware resources don't interfere with each other. for example, the os would allocate certain addresses in memory to specific applications
+    - managing hardware is also important on devices that were once considered embedded devices, such as our phones. 
+- the os hides hardware details from the application, and has policies that govern how applications may interact with the underlying hardware
+- is it part of the operating system or not?
+    - part of os:
+        - device driver
+        - file system
+        - scheduler
+    - not part of os:
+        - file editor (application)
+        - cache memory (hardware)
+        - web browser (application)
+- is it an abstraction or arbitration?
+    - arbitration
+        - distributing memory between multiple processes
+    - abstraction
+        - supporting different types of speakers (applications don't need to worry about speaker details)
+        - interchangeable access of hard disk or ssd (application doesn't need to worry about storage details)
 
 What are some examples of operating systems?
-    - operating systems differ by the kind of environment they target. for example, some os's are for pc desktops, some are for servers, some are for embedded devices
-    - some common desktop operating systems are microsoft windows, unix-based (mac osx, linux)
-    - Ada considers embedded operating systems to include: ios, android, and symbian
+
+- operating systems differ by the kind of environment they target. for example, some os's are for pc desktops, some are for servers, some are for embedded devices
+- some common desktop operating systems are microsoft windows, unix-based (mac osx, linux)
+- Ada considers embedded operating systems to include: ios, android, and symbian
 
 What are the key components of the operating system?
-    - an operating system supports a number of higher level abstractions and mechanisms that operate on top of these abstractions
-    - abstractions
-        - correspond to applications
-            - process
-            - thread
-        - corresponds to the hardware
-            - file
-            - socket
-            - memory page
-    - mechanisms
-        - for applications
-            - create (or launch an application)
-            - schedule (to run it on the CPU)
-        - for hardware
-            - open
-            - write
-            - allocate
-    - policies govern how mechanisms will be used to manage the underlying hardware
-        - a policy controls the max number of sockets that a process can have access to
-        - control which data can be removed from memory based on some algorithm like least-recently used (LRU), earliest deadline first (EDF)
+
+- an operating system supports a number of higher level abstractions and mechanisms that operate on top of these abstractions
+- abstractions
+    - correspond to applications
+        - process
+        - thread
+    - corresponds to the hardware
+        - file
+        - socket
+        - memory page
+- mechanisms
+    - for applications
+        - create (or launch an application)
+        - schedule (to run it on the CPU)
+    - for hardware
+        - open
+        - write
+        - allocate
+- policies govern how mechanisms will be used to manage the underlying hardware
+    - a policy controls the max number of sockets that a process can have access to
+    - control which data can be removed from memory based on some algorithm like least-recently used (LRU), earliest deadline first (EDF)
 
 Memory management example:
-    - abstraction: 
-        - memory page - corresponds to some addressable region of memory with fixed size
-    - mechanisms to operate on that page: 
-        - allocates that page in dram, maps that page into the address space of the process (allows process to access the physical memory that corresponds to the contents of that page)
-        - page can be moved to different locations in physical memory
-        - page can be stored on disk if we need to make room for other content in physical memory
-    - policies: 
-        - it's faster to access items in memory, so there must be some policy governing when items get moved from memory to disk
-        - least recently used -LRU is such a policy
-        - the act of moving items between disk and memory is known as "swapping"
+
+- abstraction: 
+    - memory page - corresponds to some addressable region of memory with fixed size
+- mechanisms to operate on that page: 
+    - allocates that page in dram, maps that page into the address space of the process (allows process to access the physical memory that corresponds to the contents of that page)
+    - page can be moved to different locations in physical memory
+    - page can be stored on disk if we need to make room for other content in physical memory
+- policies: 
+    - it's faster to access items in memory, so there must be some policy governing when items get moved from memory to disk
+    - least recently used -LRU is such a policy
+        - rationale is that pages that have not been used in a while are likely to not be used imminently
+    - the act of moving items between disk and memory is known as "swapping"
+
 What are some design and implementation considerations of operating systems?
+
+- separation of mechanism and policy
+    - this makes mechanisms flexible, meaning they can be used in different types of policies
+    - memory management policies: LRU, LFU (least frequently used), random
+        - for these policies, we might want to have a mechanism that tracks the frequency or the time of memory access
+    - knowing this, policies must be defined for a "common case". some considerations:
+        - where will the os be used?
+        - what machine will it be run on? what resources are available on that machine?
+        - what will the user want to execute on that machine?
+        - what are the workload requirements?
+    - with answers to these questions, and an awareness of what mechanisms are available, a policy can be defined
+
+How does the OS manage access to the hardware?
+
+- it uses a user/kernel protection boundary
+- "unprivileged mode" is designated for user-level applications. this is one side of the boundary. aka user mode
+- "privileged mode" is reserved for kernel-level operating system actions. aka kernel mode
+- traps, system calls, and signals
+- user-kernel switch is supported by hardware, meaning there is a bit in the CPU that reflects whether an operation has access to the hardware.
+    - if an operation only has user-level privileges but tries to perform a privileged operation on the hardware, it will cause a trap
+        - when a trap occurs:
+            - application is interrupted
+            - cpu hands control over to the os
+            - operating system determines what caused the trap
+            - os verifies if it should grant the access or terminate the process if the attempt was illegal. this depends on the policies that are supported by the os
+- applications can interact with the hardware through system calls
+    - the operating system exposes a system call interface that the applicatoin can explicitly invoke if they want the os to perform a service/privileged access on their behalf. examples include
+        - open (a file)
+        - send (via a socket)
+        - mmap (allocate memory)
+- the operating system can feed "signals" back to applications, which is a mechanism for the os to pass notifs into the applications
+
+Flow of a synchronous system call
+
+- user process executes
+- user process passes its arguments to the system call and makes the system call
+- process switches context to kernel/privileged mode, where the system call is executed
+    - context switch involves switching to kernel memory where the system call instructions can be executed
+- upon completion, system call outputs are returned to the user process address space
+    
+synchronous system calls are considered expensive operations because
+
+- an application must write arguments
+- save all relevant data at a well-defined location before handing off to kernel process
+    - this location must be well defined so the os kernel, based on the system call number, can determine the number and location of the arguments
+    - arguments can be passed directly between user process and system kernel, or they can be passed indirectly by reference
+- make a system call using the specific system call number
+- the process waits until the system call completes
+
+the operating system traps application instructions or memory access requiring special privilege. for instance, the application cannot change the contents of certain registers or give itself more cpu or memory. only the os can do that. 
+
+Tradeoffs of system calls: 
+
+- It can take 50-100 ns on a 2Ghz machine running linux to finish the steps involved in a system call - real overhead for the system!
+- system call transitions affect the hardware cache usage
+    - application performance depends highly on ability to use the hardware cache. accessing the cache requires an order of a few cycles. accessing memory is on the order of a few hundred cycles.
+    - when operating system is executing a system call, it will likely bring its contents into the cache, replacing some of the application content that was in the hardware cache. the application would need to access its content from memory, which, as stated before, is on the order of hundreds of times more expensive to access
+
+Examples of system calls:
+    - 
+    - 
+    - 
+    - 
+
+Types of operating system design
+    - Monolithic
+        - everything the operating system could need is included in the box
+        - this leads to less maintainability issues, but is more cumbersome (larger operating system size)
+    - Modular
+        - the operating system contains a few basic services
+        - only download the services you need
+        - some performance tradeoffs because different services need to be designed with the operating system's interfaces in mind - modularity comes at the cost of some overhead
+        - maintainability concerns (service updates can introduce bugs or service versions can be deprecated)
+        - commonly used in practice
+    - Microkernel
+        - at the os level, the microkernel can support some basic services such as address spaces and threads (context) for apps
+        - databases, and even file systems and device drivers (commonly included in os), operate at the user/unprivileged level
+        - by virtue of this design, these services require a lot of inter process communication (IPC), which the microkernel does support
+        - upsides of microkernel are the small, lightweight system size, leading to lower overhead and better performance, and the verifiability/testability of code to behave as it should
+        - downside is that it is not very portable because it is customized to the hardware. also introduces complexity because there are different variations of the microkernel for different platforms, meaning some services will need to be custom-written. because more services are in the user/unprivileged layer, they require more interaction with the kernel for inter process communication, which as stated before, is costly
+
+Linux architecture
+    - there are several "layers" to the linux architecture. from lowest to highest
+        - hardware
+        - kernel
+            - linux operating system
+        - user mode
+            - standard library
+            - standard utility programs
+        - user interface (application)
+
+The kernel itself has several subcomponents, which all have well defined functionality and interfaces. they can be independently modified or replaced, which is what enables modularity
+    - i/o component
+        - manages the virtual file system, which encompasses
+            - terminals
+            - character device drivers
+            
+    - memory management component
+        - virtual memory
+        - paging page replacement
+        - page cache
+    - process management component
+        - signal handling
+        - process/thread creation and termination
+        - CPU scheduling
+
+Mac architecture
+
+
+## Setting up a development environment and testing it
+[Source](https://github.gatech.edu/gios-fall-26/environment)
+    - this github repo contains a guide explaining several configuration options, their respective starter packages, and articles about using the gdb debugger, remote gdb debugging
+
+Two test frameworks are suggested: munit and cmocka. A quick google search summary described munit as a lightweight unit test framework, and cmocka as a mature, feature rich framework that can also detect memory leaks, buffer overruns, and underruns during test execution. it can also catch and recover from segfaults or illegal instructions mid-test. Cmocka's feature set might take more time to learn up front, but may end up saving more time in the long run. So I chose to download and learn cmocka. It turns out, the API documentation is quite good and there exists some quick startup guides online, so I feel pretty confident about using it. 
+
+I compiled a simple cmocka test harness to test my environment.
+
+## An Introduction to Programming with Threads
+[Source](https://s3.amazonaws.com/content.udacity-data.com/courses/ud923/references/ud923-birrell-paper.pdf)
+- A thread is a sequential flow of control
+- having multiple threads in a program means the program, at any given moment, has multiple instances of execution, one in each of its threads
+- programmer must decide when to use multiple threads, and also be aware that the computer may not always execute the threads simultaneously
+- having threads execute in the same address space means the threads can access the same section of memory
+- thread facilities are advertised to be "lightweight". thread creation, destruction, existence, and synchronization primitives are cheap enough that the programmer can use threads for concurrency needs
+- What's the point of concurrency?
+    1) modern processors have multi cores. concurrency allows us to take advantage of the available hardware
+        - the alternative to concurrency is to have the multiple processes to eadch occupy a separate address space of their own, which is costly: it is expensive to set up, and the cost of communicating between different address spaces is high
+        - concurrency allows processors to be used cheaply
+    2) threads can be assigned to slow devices such as disks, networks, terminals, and printers. when the thread is waiting for input, the computer should be able to do other useful work, so the input and processes are separated in different threads. 
+    3) Multitasking is also achievable with multiple threads. Each time a user clicks on an application to start different processes, a thread can be used to handle each process. The implementation of this type of application probably also depends on a separate thread to accept mouse click input.
+    4) Threads can also be used on distributed systems to handle incoming requests. Threads can be used to handle each client's request in parallel instead of serializing them, such as in the case of a file server or spooling print server.
+    5) Threads can also be used in applications to reduce the latency of operations (time between initiating a procedure and getting the outputs of that procedure). The book gives the example of adding/removing an item from a balanced tree. The operation can be returned to the caller while the tree is rebalanced in a separate thread. This is an example of using concurrency to defer the work of a procedure since the outcome does not depend on it.
+
+### Primitives of Multi-Threading
