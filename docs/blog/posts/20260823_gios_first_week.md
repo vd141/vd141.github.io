@@ -723,6 +723,89 @@ I compiled a simple cmocka test harness to test my environment.
     2) threads can be assigned to slow devices such as disks, networks, terminals, and printers. when the thread is waiting for input, the computer should be able to do other useful work, so the input and processes are separated in different threads. 
     3) Multitasking is also achievable with multiple threads. Each time a user clicks on an application to start different processes, a thread can be used to handle each process. The implementation of this type of application probably also depends on a separate thread to accept mouse click input.
     4) Threads can also be used on distributed systems to handle incoming requests. Threads can be used to handle each client's request in parallel instead of serializing them, such as in the case of a file server or spooling print server.
-    5) Threads can also be used in applications to reduce the latency of operations (time between initiating a procedure and getting the outputs of that procedure). The book gives the example of adding/removing an item from a balanced tree. The operation can be returned to the caller while the tree is rebalanced in a separate thread. This is an example of using concurrency to defer the work of a procedure since the outcome does not depend on it.
+    5) Threads can also be used in applications to reduce the latency of operations (time between initiating a procedure and getting the outputs of that procedure). The book gives the example of adding/removing an item from a balanced tree. The operation can be returned to the caller while the tree is rebalanced in a separate thread. This is an example of using concurrency to defer the work of a procedure since the outcome does not depend on it. The benefit of reducing latency to the end user is a more responsive program.
 
-### Primitives of Multi-Threading
+### Designing a Thread Facility
+
+A facility is a construct containing multiple threads accessing some shared resource. Only one thread is allowed to access the resource at a time. This is called asynchronous execution.
+
+- Thread creation
+    - A fork is a function that creates a thread by defining the thread's procedure and giving the thread arguments (the necessary ingredients to execute that procedure). it can be thought of as a thread handler
+    - The thread "dies" when it returns the results of its procedure
+    - a fork returns to its caller a handle/reference to the newly created thread
+    - the thread handle can be passed to a join procedure, which waits for the thread to terminate and returns the result of the given thread's initial procedure. join is a synchronization arrangement
+    - join is not always used and not always necessary, because threads can communiate their results by some synchronization arrangement other than join
+
+- mutual exclusion (MUTEX)
+    - when a thread has access to a shared resource, it locks the resource so no other threads can use it. a MUTEX is a primitive that specifies a particular snippet of code, such as global variables, that only one thread can execute at any time
+    - has two states: locked and unlocked
+    - a thread executing inside the mutex has a "lock", or is said to "hold the mutex", meaning no other threads can access the mutex. any thread that attempts to access a locked mutex is said to "block" (added to the mutex queue) until the mutex is unlocked
+    - a concrete example of a mutex in action is using it to allow only one thread to update a linked list at a time. a mutex and linked list head are declared. then, inside a 'lock' clause, the commands to add a new element to the linked list are executed. this prevents multiple threads from updating the linked list at a time.
+    - a mutex can also be used to protect part of a data structure. to express this, the lock clause would begin by selecting the mutex field of the data structure
+    - a mutex can be understood as a resource scheduling mechanism. the resource is the shared memory inside the lock clause, and the scheduling policy is one thread at a time
+
+- condition variables - waiting for events
+    - a thread has a mutex lock until the lock clause is finished executing, but for more complicated scheduling policies, a condition variable is used
+    - a condition is always associated with a mutex and the data protected by that mutex
+    - a monitor consists of some data, a mutex, and zero or more condition variables
+    - a condition variable has three types of operations: wait, signal, and broadcast, which are triggered by conditions
+        - when **wait** is triggered, the thread is blocked (queued) and the mutex is unlocked.
+        - the **signal** operation does nothing unless a thread is blocked on the condition variable, in which it unlocks one or more blocked threads
+        - **broadcast** awakens all the threads currently blocked on the condition variable
+    - when a thread is awoken inside 'wait', it relocks the mutex and returns. unless the mutex is already locked, which will keep the thread blocked on the mutex until it is available
+    - if the shared resource is not available, the thread unlocks the mutex and blocks by calling **wait**
+    - a thread can call a signal when it is done with its task
+
+- alerts - escaping a thread from a long-term waiting event
+    - threads have states
+    - one state of a thread is stored in the alert-pending state, which is initially false
+    - if AlertWait is triggered, a threads alert-pending is changed from true to false, relocks the mutex, and raises the exception 'alerted'
+    - if alertwait is triggered, a thread that was blocked on a condition can be awoken, lock the mutex, and raise the 'alerted' exception
+    - calling alert on a thread that is not blocked simply sets its alert-pending boolean to true
+    - a testalert call atomically tests and clears the thread's alert-pending boolean
+    - example of using an alert: a thread is waiting but a second thread has determined that the first thread no longer needs to wait, the second thread will call Alert(firstThread)
+
+### Using a Mutex: Accessing Shared Data
+- unprotected data
+    - unsynchronized behavior, or mutating unprotected data with multiple threads, can result in nondeterministic behavior. behavior depends on the precise timing relationship between threads. page faults, the use of real time timer facilities, or asynchrony in a multi-processor system are causes of this nondeterministic behavior. so data must be protected with mutexes
+    - "make your mutexes as simple as possible, but no simpler"
+- invariants
+    - a boolean that is true when the mutexed data is unlocked
+    - it's used to describe what the mutex is protecting, when the data protected by the mutex is complicated
+    - it's an informalism that helps programmers describe what the mutex is protecting
+    - it describes a state about the mutexed data - for example, if a thread updates a mutexed null array at index i, the invariant is that "i is the index of the first null in the array and all elements in the array after i are null". the invariant is false when/after the thread operates on the array, but true before the mutex is locked by a thread
+    - threads are responsible for restoring this boolean when finished with the operation, before calling 'wait'
+- cheating
+    - the idea that you must use a mutex to protect every global variable is based on the model where the actions of the threads are arbitrarily interleaved. there are some instances where this model doesn't hold true, but the conditions are not easily generalized
+    - this applies to simple variables as well
+    - one "cheat" is to use unsynchronized access as a "hint", knowing that the mutexed operation you really want to call is expensive
+        - this cheat only works if the programming language you are using guarantees several assumptions:
+            - reaading it without a mutex will not cause a runtime error
+            - reading it when its value is False will give you the value False (for example)
+- deadlocks involving only mutexes
+    - Thread 1 locks mutex A, thread 2 locks mutex B, Thread 1 is blocked on mutex B, thread 2 is blocked on mutex A. so they don't go anywhere because they are stuck in the queue!
+    - to solve this, arrange for any thread that has to lock two mutexes to lock them in a specific order every time. for example, this would mean that a thread that needs to lock mutex A and B must lock them in that order
+    - a technique that makes this partial order more achievable requires a certain condition. that condition is that the two threads are not modifying the exact same data (for example, thread 1 needs to access the first three elements of an array and thread 2 only needs to access the next three elements). it then becomes possible to place partial locks on the array rather than a lock on the entire array. in the end, requiring that threads lock in a specific order still applies, it's just being applied on a more granular level
+        - the tradeoff to this technique is that the locking is more complicated and you are likelier to have unsynchronzied access to shared data. but it is faster if executed correctly
+    - having a program deadlock is preferable to having it provide the wrong answer
+- poor performance through lock conflicts
+    - 
+- releasing the mutex within a lock clause
+
+### Using a Condition Variable: Scheduling Shared Resources
+- 
+
+### Using Fork: Working in Parallel
+- 
+
+### Using Alert: Diverting the Flow of Control
+- 
+
+### Additional Techniques
+- 
+
+### Building Your Program
+- 
+
+### Concluding Remarks
+- 
