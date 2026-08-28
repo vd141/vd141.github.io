@@ -710,19 +710,27 @@ Two test frameworks are suggested: munit and cmocka. A quick google search summa
 I compiled a simple cmocka test harness to test my environment.
 
 ## An Introduction to Programming with Threads
+
 [Source](https://s3.amazonaws.com/content.udacity-data.com/courses/ud923/references/ud923-birrell-paper.pdf)
+
 - A thread is a sequential flow of control
 - having multiple threads in a program means the program, at any given moment, has multiple instances of execution, one in each of its threads
 - programmer must decide when to use multiple threads, and also be aware that the computer may not always execute the threads simultaneously
 - having threads execute in the same address space means the threads can access the same section of memory
 - thread facilities are advertised to be "lightweight". thread creation, destruction, existence, and synchronization primitives are cheap enough that the programmer can use threads for concurrency needs
 - What's the point of concurrency?
+
     1) modern processors have multi cores. concurrency allows us to take advantage of the available hardware
-        - the alternative to concurrency is to have the multiple processes to eadch occupy a separate address space of their own, which is costly: it is expensive to set up, and the cost of communicating between different address spaces is high
-        - concurrency allows processors to be used cheaply
+        
+    - the alternative to concurrency is to have the multiple processes to eadch occupy a separate address space of their own, which is costly: it is expensive to set up, and the cost of communicating between different address spaces is high
+    - concurrency allows processors to be used cheaply
+
     2) threads can be assigned to slow devices such as disks, networks, terminals, and printers. when the thread is waiting for input, the computer should be able to do other useful work, so the input and processes are separated in different threads. 
+    
     3) Multitasking is also achievable with multiple threads. Each time a user clicks on an application to start different processes, a thread can be used to handle each process. The implementation of this type of application probably also depends on a separate thread to accept mouse click input.
+    
     4) Threads can also be used on distributed systems to handle incoming requests. Threads can be used to handle each client's request in parallel instead of serializing them, such as in the case of a file server or spooling print server.
+    
     5) Threads can also be used in applications to reduce the latency of operations (time between initiating a procedure and getting the outputs of that procedure). The book gives the example of adding/removing an item from a balanced tree. The operation can be returned to the caller while the tree is rebalanced in a separate thread. This is an example of using concurrency to defer the work of a procedure since the outcome does not depend on it. The benefit of reducing latency to the end user is a more responsive program.
 
 ### Designing a Thread Facility
