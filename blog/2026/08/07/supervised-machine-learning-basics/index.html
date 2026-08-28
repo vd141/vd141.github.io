@@ -1,0 +1,1828 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vd141.github.io/blog/2026/08/07/supervised-machine-learning-basics/">
+      
+      
+        <link rel="prev" href="../../04/database-case-study/">
+      
+      
+        <link rel="next" href="../../20/how-i-discovered-cycling/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Supervised Machine Learning Basics - Victor Dinh</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gelasio:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Gelasio";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="victor" data-md-color-primary="custom" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cost-function" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Victor Dinh" class="md-header__button md-logo" aria-label="Victor Dinh" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Victor Dinh
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Supervised Machine Learning Basics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="victor" data-md-color-primary="custom" data-md-color-accent="green"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="green"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Victor Dinh" class="md-nav__button md-logo" aria-label="Victor Dinh" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Victor Dinh
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cost-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost function
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gradient-descent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradient descent
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gradient descent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#derivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Derivation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning rate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#convex-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convex function
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-multivariate-regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple multivariate regression
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiple multivariate regression">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vectorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vectorization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vectorization-vs-sequential-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vectorization vs sequential calculation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conventions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-descent-for-multiple-linear-regresssion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradient descent for multiple linear regresssion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feature Scaling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Feature Scaling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#feature-scaling-desired-outcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feature scaling desired outcome
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-scaling-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feature Scaling Techniques
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-gradient-descent-for-convergence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking gradient descent for convergence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-a-learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing a learning rate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exploratory-data-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exploratory data analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feature engineering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#polynomial-regression-another-form-of-feature-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Polynomial regression (another form of feature engineering)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scikit-learn-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scikit-learn models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linear-regression-practice-lab-lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linear Regression Practice Lab Lessons Learned
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Classification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logistic-regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logistic regression
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logistic regression">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-function-for-logistic-regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost function for logistic regression
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-gradient-descent-for-logistic-regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch gradient descent for logistic regression
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logistic-regression-with-scikit-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logistic Regression with Scikit-Learn
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overfitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overfitting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overfitting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3-techniques-to-address-overfitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 techniques to address overfitting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overfitting-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overfitting Lab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifying-the-cost-function-to-accomodate-regularization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modifying the cost function to accomodate regularization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-descent-with-regularization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        gradient descent with regularization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-lab-building-a-logistic-regression-model-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Final lab: building a logistic regression model from scratch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#areas-for-further-exploration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Areas for Further Exploration
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-08-07 00:00:00+00:00" class="md-ellipsis">August 7, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              29 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:machine-learning" class="md-tag">Machine Learning</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:notes" class="md-tag">Notes</a>
+      
+    
+  </nav>
+
+
+
+  <h1>Supervised Machine Learning Basics</h1>
+
+<p>After taking Machine Learning for Trading (ML4T) this spring, where I built a trading bot using machine learning principles, I was curious about applying the algorithms to areas outside of finance. In the course, I built a few machine learning algorithms from scratch in Python. It would pretty tedious to build the algorithms from scratch or tweak them to every use case <del>ain't nobody got time for that</del>, however, and I wanted to focus more on their applications in new domains. Andrew Ng's Supervised Machine Learning course seemed like a great way to dip my toe in the water and use some modern-day frameworks, so I started the course.</p>
+<p>Within the first few minutes of the course, I was presented with a few examples of supervised learning in practice: spam filtering, speech recognition, machine translation, online advertising, self-driving cars, and defect detection in manufacturing. Online advertising was the most illustrative example: features would be the ad and user info, and the output would be whether the user clicks on the ad. In the case of</p>
+<p>Unsupervised learning received some coverage as well. An example of an unsupervised learning algorithm is in Google's news aggregation tile, where similar stories from different news outlets are clustered together. This is an example of a clustering algorithm. A clustering algorithm <del>finds structure in data without being explicitly told what that structure should look like</del> groups similar data together. So in the case of the google tile, it finds similar news articles based on several keywords that they share - these keywords are discovered by the algorithm itself!</p>
+<p>More generally, an unsupervised learning algorithm receives data with labeled inputs and unlabeled outputs. 
+Clustering is one example. Anomaly detection is another. An example of anomaly detection is detecting fraud in the financial systems, such as unusual transactions. Another example of unsupervised learning is dimensionality compression, where the resulting dataset is much smaller.</p>
+<h2 id="cost-function">Cost function</h2>
+<p>I was curious why mean squared error was used in ML4T. This course addresses a few reasons why MSE is a useful cost function:
+- taking the mean of the errors prevents the cost function from unboundedly increasing as the training set increases in size
+- the shape of a squared function is convex. in other words, the cost function will always have a minimum which gradient descent can exploit in all dimensions</p>
+<p>Additionally, this course uses a MSE cost function with a coefficient of 1/2. More on why in the gradient descent section.</p>
+<h2 id="gradient-descent">Gradient descent</h2>
+<p><span class="arithmatex">\(\omega = \omega - \alpha \frac{\partial J(\omega)}{\partial \omega}\)</span></p>
+<ul>
+<li>With respect to model weights, simultaneous updates occur when weights are updated in succession. Ng cautions against using non simultaneous updates in gradient descent because this is not how gradient descent is typically implemented, which means the non simultaenous update may have different characteristics. instead, all weights should be updated before the next iteration</li>
+</ul>
+<p>gradient descent is described as an interative update to a parameter. the updated parameter gets the result of the product of (a learning rate factor and [partial] derivative) subtracted from the previous parameter value.</p>
+<p>In the ML community, a "batch" gradient descent algorithm is one that is used to tune the model on the "batch" - that is, the whole - of training data.</p>
+<p>Notably, there exists an alternative to gradient descent, called the normal equation, that works only for linear regression. It can solve for the weights without iterations. It's practical when the number of features is small and may be used in some machine learning libraries for linear regression applications.</p>
+<h3 id="derivation">Derivation</h3>
+<p>The reason for the 1/2 coefficient becomes apparent when deriving the gradient from the MSE cost function. Using the chain rule from calculus, the quadratic is differentiated into a linear function with a coefficient of 2. This is what the 1/2 coefficient from before addresses. </p>
+<h2 id="learning-rate">Learning rate</h2>
+<p>If the learning rate <span class="arithmatex">\(\alpha\)</span> is too small, gradient descent makes tiny updates and takes a long time to reach the minimum. If <span class="arithmatex">\(\alpha\)</span> is too large, the updates can overshoot the minimum, bounce around, or even fail to converge.</p>
+<p>The main idea is that <span class="arithmatex">\(\alpha\)</span> controls the step size of each gradient-descent update. The best learning rate is large enough to make progress efficiently, but small enough that the cost keeps moving downward instead of oscillating or diverging. In practice, a dynamically-adjusted alpha could yield better results. For example, alpha can be relatively large at the outset, but iteratively diminished the closer the GD function gets to the local minima.</p>
+<p>Ng notes that even with a fixed learning rate, it is still possible for GD to converge on the local minimum. Imagining a simple quadratic curve: as the iterative updates to the parameter approach the minimum, the magnitude of the  gradient decreases such that the magnitude of the parameter's updates reduce over time.</p>
+<p>The most important takeaway of this section is that by periodically checking the cost function during a gradient descent, you can see whether or not the algorithm is converging or diverging. If it is diverging, this may be a signal to decrease the learning rate. </p>
+<h2 id="convex-function">Convex function</h2>
+<p>The quadratic mean squared error (MSE) function is a convex function. The GD algorithm will always converge to its global minimum. This is in contrast to functions that have multiple local minima. The GD algorithm is not guaranteed to converge to the global minimum because it ultimately depends on where the initial guess of the parameters is.</p>
+<h2 id="multiple-multivariate-regression">Multiple <del>multivariate</del> regression</h2>
+<p>Several features, one output. a set of features belonging to one training example is also known as a vector. (A multivariate regression involves multiple features predicting multiple outputs, which will not be covered here)</p>
+<p>Multiple regression involves finding multiple weights to minimize the cost function of a training set of data. Each input feature is multiplied by its respective weight to produce the model's prediction. Like in linear regression, the bias term can be thought of as the prediction when all features are zero-valued. When features and weights are both represented as vectors, we take the dot product of the two and add the bias term to calculate the model's prediction.</p>
+<h3 id="vectorization">Vectorization</h3>
+<p>Vectorization is an efficient technique to perform vector calculations. Instead of using a for loop to calculate the dot product, or manually typing out the element-wise products, which can be tedious, using numpy's dot method requires only one line of code and is computationally more efficient. It is computationally efficient because it uses parallelization (computing multiple calculations simultaneously) to execute the calculations. This parallelism is enabled by the underlying hardware. GPU's and modern CPU's implement Single Instruction, Multiple Data (SIMD) pipelines allowing multiple operations to be executed in parallel.</p>
+<h3 id="vectorization-vs-sequential-calculation">Vectorization vs sequential calculation</h3>
+<p>Imagine using a for loop and a cumulative sum to calculate the cost function of a model that has multiple weights and corresponding training inputs. The algorithm must complete and store the results of one calculation before moving on to the next one in the sequence. In other words, it performs calculations sequentially. In contrast, a vectorized algorithm computes each calculation at the same time, then sums the results of the calculations all at once. </p>
+<p>In small datasets and models, the performance differences between the two may be negligible. However, in larger datasets and models, the differences can be quite dramatic. This is why it is best practice to use vectorization when possible.</p>
+<h3 id="conventions">Conventions</h3>
+<p>Dimension or rank are terms used to describe the number of elements in a vector.
+Dimension can also be used to describe the number of indexes in an array (the number of elements the size() function returns)</p>
+<p>When declaring a dimensional data struct in python, the first parameter of the constructor typically specifies the shape of the struct. The argument can be a scalar or a tuple.</p>
+<p>Matrix dimensions are described with mxn tuples, with the elements representing rows and columns respectively.</p>
+<p>The reshape method, when used on a vector/array, can be used to create a matrix from an array by specifying the number of rows and columns. if -1 is used for a row/column, it dynamically computes the respective number of rows/columns based on the number of elements and the value provided for the other dimension, and generates a matrix of  that shape</p>
+<h3 id="gradient-descent-for-multiple-linear-regresssion">Gradient descent for multiple linear regresssion</h3>
+<p>For multiple regression, the cost function is calculated the same way for each weight, but applied to each weight and its respective input. The gradient descent update for each coefficient becomes</p>
+<p><span class="arithmatex">\({\omega}_j := {\omega}_j - \alpha \frac{1}{m} \sum_{i=1}^{m} \left(f_{\vec{\omega},b}(\vec{x}^{(i)}) - y^{(i)}\right)x_j^{(i)}\)</span></p>
+<p>where <span class="arithmatex">\(f_{\vec{\omega},b}(\vec{x}^{(i)})\)</span> is the model prediction for training example <span class="arithmatex">\(i\)</span>, and <span class="arithmatex">\(\vec{x}^{(i)}\)</span> is the feature vector for that example. Note that the inner function <span class="arithmatex">\(\vec{x}^{(i)}\)</span> and the weights <span class="arithmatex">\(\vec{\omega}\)</span> are now vectors. Because the weights <span class="arithmatex">\({\omega}_j\)</span> are stored in a vector, all the weights are updated simultaneously in each gradient descent iteration.</p>
+<h3 id="feature-scaling">Feature Scaling</h3>
+<p>Feature scaling is a technique that can improve gradient descent performance. Given a feature <span class="arithmatex">\(x_1\)</span> with values ranging from <span class="arithmatex">\(1-5\)</span> and a feature <span class="arithmatex">\(x_2\)</span> with values ranging from <span class="arithmatex">\(1-100\)</span>. We can say that <span class="arithmatex">\(x_1\)</span> has a smaller range of values than <span class="arithmatex">\(x_2\)</span>. In this example, a model will choose smaller weights for features that have large values, and larger weights for features with relatively small values. It follows that <span class="arithmatex">\(w_1\)</span> has a larger range than <span class="arithmatex">\(w_2\)</span>. When plotting the cost function as a function of <span class="arithmatex">\(w_1\)</span> and <span class="arithmatex">\(2_2\)</span> on a contour plot, we would see that the algorithm oscillates on the <span class="arithmatex">\(w_1\)</span> scale for every small step it takes on the <span class="arithmatex">\(w_2\)</span> scale. The contour plot is asymmetric. This oscillation results in a slower convergence time. To speed up the convergence time, we can scale the features appropriately so that they are on similar scales, reducing the amount of oscillation. </p>
+<h4 id="feature-scaling-desired-outcome">Feature scaling desired outcome</h4>
+<p>Recall that the objective of feature scaling is to improve gradient descent performance by normalizing features to similar ranges and scales.
+Generally, it is desirable to bound the feature values between -1 and 1. In practice, deviations from this ideal range are acceptable: -3 to 3 and -0.3 to 0.3 are fine. 0 to 3 for <span class="arithmatex">\(x_1\)</span> is even okay, even when a separate feature <span class="arithmatex">\(x_2\)</span> is in the range of -2 to 0.5. Situations you might want to rescsale: <span class="arithmatex">\(x_3\)</span> in the range of -100 to 100, <span class="arithmatex">\(x_4\)</span> in the range of -0.001 to 0.001. The ranges are too big and too small. In the case of <span class="arithmatex">\(x_5\)</span> ranging from 98.6 to 105, the range is in-family, but the values themselves are too large. So this feature is a prime candidate for rescaling.
+Feature scaling is almost never harmful, so if it is cheap to do, it should be done.</p>
+<h4 id="feature-scaling-techniques">Feature Scaling Techniques</h4>
+<p>Assuming the training data values are all nonnegative, a rudimentary technique is to divide each training feature by the maximum value of its feature set (assuming all training features are positive). This bounds each feature between 0 and 1. A more generalizable version of this technique is to rescale each feature by both its minimum and maximum values using <span class="arithmatex">\(x_{i_{transformed}} = (x_i - x_{imin})/(x_{imax}-x_{imin})\)</span>.</p>
+<p>Another technique for centering a feature's values near
+ 0 is known as mean normalization. To perform a mean normalization for a particular feature <span class="arithmatex">\(x_i\)</span>, find the mean, <span class="arithmatex">\(\mu_i\)</span> of the feature and the difference between the maximum and minimum value of that feature. To transform each feature example, subtract the mean and divide the result by the difference: <span class="arithmatex">\(x_{i_{transformed}} = (x_i - \mu_i)/(x_{imax}-x_{imin})\)</span>.</p>
+<p>Z-score normalization: The result of this technique is a feature with a mean of 0 and a standard deviation of 1. For a feature, calculate the mean <span class="arithmatex">\(\mu_1\)</span> and standard deviation <span class="arithmatex">\(\sigma_1\)</span>. Subtract <span class="arithmatex">\(\mu_1\)</span> from a feature example and divide the result by <span class="arithmatex">\(\sigma_1\)</span>: <span class="arithmatex">\(x_{i_{transformed}} = (x_i - \mu_i)/\sigma_1\)</span>.</p>
+<p>When normalizing features, it is important to store the mean and standard deviations. After learning the parameters from the model, we want to apply the model to a dataset it has not yet encountered. The mean and standard deviation are used to normalize the unseen data.</p>
+<p>Notably, these techniques do not alter the distribution of the data, only its scale.</p>
+<h3 id="checking-gradient-descent-for-convergence">Checking gradient descent for convergence</h3>
+<p>Plot the cost function values against the number of iterations that have occurred. This is called a learning curve. This plot can alert you to a poorly chosen learning rage <span class="arithmatex">\(\alpha\)</span> or a bug in the code. The cost function has likely converged when the learning curve has flattened out. The number of iterations needed for convergence varies by the application. Another way to flag for convergence is by using an <span class="arithmatex">\(\epsilon\)</span> value, which is the delta of the cost function between two different iterations that we can define to declare convergence. Ng prefers to use a learning curve to observe the behavior as the algorithm converges. </p>
+<h3 id="choosing-a-learning-rate">Choosing a learning rate</h3>
+<p>The learning curve can suggest that the <span class="arithmatex">\(\alpha\)</span> is too large. If the cost function is oscillating or steadily increasing, <span class="arithmatex">\(\alpha\)</span> may require a reduction. These behaviors could also suggest that there is a bug in the code, for example if the learning rate term is being added to the weight instead of being subtracted. A functional <span class="arithmatex">\(\alpha\)</span> results in a steadily decreasing learning curve. A very small <span class="arithmatex">\(\alpha\)</span> can be used to debug code - if the learning curve is not steadily decreasing, this suggests an error in the code. If there are no errors, <span class="arithmatex">\(\alpha\)</span> can be increased (but not by too much!) to improve convergence performance. Ng uses threefold scaling factors after a successful attempt with <span class="arithmatex">\(\alpha\)</span> and adjusts from there.</p>
+<h3 id="exploratory-data-analysis">Exploratory data analysis</h3>
+<p>Before training a model on the training set, we plot each feature data against the target data to spot any relationships.</p>
+<h3 id="feature-engineering">Feature engineering</h3>
+<p>When we have a particular insight about a dataset, we can engineer features by transforming or combining  existing ones to improve the prediction accuracy. For example, frontage (width of a plot of land) and length of a housing plot may be engineered into an area feature (frontage x length) that can be added to the training example, which can then be used to predict price. </p>
+<h3 id="polynomial-regression-another-form-of-feature-engineering">Polynomial regression (another form of feature engineering)</h3>
+<p>If the relationship between a feature and the target
+ is nonlinear, polynomial terms can be engineered from the existing feature to provide a better model fit to the data. For example, squaring, cubing, or taking the root of an existing feature and using it as a new feature can help the model provide more accurate predictions. Here, feature scaling is even more important due to the increased scale of the derived features.</p>
+<p>When gradient descent is applied to a model with polynomials, it tends to emphasize the terms that fit the data best (increases their weights) and deemphasizes the other terms. Less weight value implies less important/correct feature.</p>
+<p>An alternate way of thinking about fitting polynomials to targets is that the best features are actually linear relative to the target. </p>
+<p>With feature engineering, complex functions can be modeled.</p>
+<h2 id="scikit-learn-models">Scikit-learn models</h2>
+<p>Scikit-learn has a gradient descent regression model <code>sklearn.linear_model.SGDRegressor</code></p>
+<ul>
+<li>Performs best with normalized inputs</li>
+<li><code>sklearn.preprocessing.StandardScaler</code> performs z-score normalization, AKA 'standard score'</li>
+</ul>
+<p>Code sample using scikit learn below
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">SGDRegressor</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lab_utils_multi</span><span class="w"> </span><span class="kn">import</span>  <span class="n">load_house_data</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lab_utils_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">dlc</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'./deeplearning.mplstyle'</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># load the training set</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">load_house_data</span><span class="p">()</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">X_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'size(sqft)'</span><span class="p">,</span><span class="s1">'bedrooms'</span><span class="p">,</span><span class="s1">'floors'</span><span class="p">,</span><span class="s1">'age'</span><span class="p">]</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1"># scale/normalize the training data</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">X_norm</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Peak to Peak range by column in Raw        X:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>   
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Peak to Peak range by column in Normalized X:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="n">X_norm</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="c1"># Create and fit the regression model</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="n">sgdr</span> <span class="o">=</span> <span class="n">SGDRegressor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="n">sgdr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_norm</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="nb">print</span><span class="p">(</span><span class="n">sgdr</span><span class="p">)</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"number of iterations completed: </span><span class="si">{</span><span class="n">sgdr</span><span class="o">.</span><span class="n">n_iter_</span><span class="si">}</span><span class="s2">, number of weight updates: </span><span class="si">{</span><span class="n">sgdr</span><span class="o">.</span><span class="n">t_</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1"># View the parameters</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="n">b_norm</span> <span class="o">=</span> <span class="n">sgdr</span><span class="o">.</span><span class="n">intercept_</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="n">w_norm</span> <span class="o">=</span> <span class="n">sgdr</span><span class="o">.</span><span class="n">coef_</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"model parameters:                   w: </span><span class="si">{</span><span class="n">w_norm</span><span class="si">}</span><span class="s2">, b:</span><span class="si">{</span><span class="n">b_norm</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="nb">print</span><span class="p">(</span> <span class="s2">"model parameters from previous lab: w: [110.56 -21.27 -32.71 -37.97], b: 363.16"</span><span class="p">)</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="c1"># Make predictions</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="c1"># make a prediction using sgdr.predict()</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="n">y_pred_sgd</span> <span class="o">=</span> <span class="n">sgdr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_norm</span><span class="p">)</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="c1"># make a prediction using w,b. </span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_norm</span><span class="p">,</span> <span class="n">w_norm</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_norm</span>  
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"prediction using np.dot() and sgdr.predict match: </span><span class="si">{</span><span class="p">(</span><span class="n">y_pred</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y_pred_sgd</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prediction on training set:</span><span class="se">\n</span><span class="si">{</span><span class="n">y_pred</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span> <span class="p">)</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Target values </span><span class="se">\n</span><span class="si">{</span><span class="n">y_train</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="c1"># plot predictions and targets vs original features    </span>
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="p">)):</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span><span class="n">y_train</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'target'</span><span class="p">)</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">X_features</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span><span class="n">y_pred</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">dlc</span><span class="p">[</span><span class="s2">"dlorange"</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'predict'</span><span class="p">)</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Price"</span><span class="p">);</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"target versus prediction using z-score normalized model"</span><span class="p">)</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></p>
+<h2 id="linear-regression-practice-lab-lessons-learned">Linear Regression Practice Lab Lessons Learned</h2>
+<p>The problem statement is this: Suppose you are the CEO of a restaurant chain and want to expand to new, more profitable cities. Given that you already have restaurants in many cities and profit/population data from those, can you use your data to predict which cities could be good candidates to give your business higher profits?</p>
+<ol>
+<li>Start by loading the population/profit data for all your existing restaurants.</li>
+<li>Explore some of the data, and familiarize yourself with some examples. Verify that the data looks as you expect it to. If it doesn't, perhaps the data is in a different range than you were expecting, the units are different, or maybe there is some bad data. Also verify the data's dimensions. It is important  the data is fit for model-building.</li>
+<li>Build plots to visualize the data!</li>
+</ol>
+<p>Linear regression refresher: Building a good linear regression model involves selecting the weights that minimize the cost function. So the cost function is dependent on the weights. Gradient descent improves the weight selection by updating the weights iteratively. It does so by subtracting the product of the learning rate and derivative of the cost function (with respect to the weight) from the previous weight value. When gradient descent can no longer improve the weights, i.e. when there is not a significant difference in cost function between iterations, the model is considered "trained" and can now make predictions on non-training data. </p>
+<p>The lab has you code up the cost function and gradient descent. With vectorized code in mind, I found it was easier to write out my thoughts as comments first, then translate them to vectorized code. My cost function ended up being 3 lines, although it could probably be condensed to 1 (at the cost of readability). </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">compute_cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="sd">    Computes the cost function for linear regression.</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="sd">    Args:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="sd">        x (ndarray): Shape (m,) Input to the model (Population of cities) </span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="sd">        y (ndarray): Shape (m,) Label (Actual profits for the cities)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="sd">        w, b (scalar): Parameters of the model</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="sd">    Returns</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="sd">        total_cost (float): The cost of using w,b as the parameters for linear regression</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="sd">               to fit the data points in x and y</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="sd">    """</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="c1"># number of training examples</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">m</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="c1"># You need to return this variable correctly</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="n">total_cost</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="c1">### START CODE HERE ###</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="c1"># x and y are single column vectors</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="c1"># model makes a prediction f_wb(x^(i)) based on an input x^(i)</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    <span class="n">f_wb</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span> <span class="c1"># f_wb is a column vector of length m, is the model's prediction for each x</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>    <span class="c1"># cost is the difference between the prediction and true output, squared</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    <span class="n">cost_vec</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_wb</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="c1"># vector (length m) of the cost for each training example</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>    <span class="c1"># the cost over all predictions and outputs for the feature set are summed and divided by (2m)</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>    <span class="n">total_cost</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cost_vec</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">)</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="c1">### END CODE HERE ### </span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>    <span class="k">return</span> <span class="n">total_cost</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">compute_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="sd">    Computes the gradient for linear regression </span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="sd">    Args:</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="sd">      x (ndarray): Shape (m,) Input to the model (Population of cities) </span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="sd">      y (ndarray): Shape (m,) Label (Actual profits for the cities)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="sd">      w, b (scalar): Parameters of the model  </span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="sd">    Returns</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="sd">      dj_dw (scalar): The gradient of the cost w.r.t. the parameters w</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="sd">      dj_db (scalar): The gradient of the cost w.r.t. the parameter b     </span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="sd">     """</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="c1"># Number of training examples</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">m</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="c1"># You need to return the following variables correctly</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="n">dj_dw</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    <span class="n">dj_db</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    <span class="c1">### START CODE HERE ###</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    <span class="c1"># single variable linear regression depends on gradient descent for each weight: w, b</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>    <span class="c1"># the gradient descent for each weight is calculated using the partial derivative of the cost function with</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>    <span class="c1"># respect to the weight</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="c1"># the partial derivative with respect to w is: (f_wb - y) * x</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>    <span class="c1"># the partial derivative with respect to b is: (f_wb - y)</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>    <span class="c1"># This is absolutely true when there is one training example x, and one target y.</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>    <span class="c1"># But when there are multiple training examples, the gradient should be based on all of the training examples. </span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>    <span class="c1"># So we take the average gradient across all training examples: sum(w_gradients)/m and sum(b_gradients)/m</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>    <span class="n">f_wb</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span> <span class="c1"># f_wb is a column vector of length m, is the model's prediction for each x</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>    <span class="n">dj_dw</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">((</span><span class="n">f_wb</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>    <span class="n">dj_db</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">((</span><span class="n">f_wb</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>    <span class="c1">### END CODE HERE ### </span>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>    <span class="k">return</span> <span class="n">dj_dw</span><span class="p">,</span> <span class="n">dj_db</span>
+</code></pre></div>
+<p>After cwriting compute_gradient, the function can now be used iteratively in a gradient descent algorithm. The algorithm should iteratively improve the weights (the cost function should decrease each time). The algorithm is a loop of: calculate gradient, update weight, measure cost. The end condition can be set as a number of iterations or a mimimum cost function delta between successive iterations.</p>
+<h2 id="classification">Classification</h2>
+<p>Home stretch of the course! After a few days of refreshing regression basics, I am excited to get to classification. The course so far has been refreshing. I've been able to explore the topics in more depth than I did in the ML4T class.</p>
+<p>Some classification applications: determining if email is spam, determining if a transaction is fraudulent, determining if a tumor is malignant. A classification model makes a categorization based on whether the probability of an input being in a category exceeds the decision boundary.</p>
+<p>Classification predicts discrete categories, while regression predicts real numbers. Here's a question: given a training data set of single-column real-valued inputs mapped to binary outputs, what happens if I use a linear regression model to deterimine categories? Assume that I have found a linear regression model that fits the data (it probably won't fit all that well, because the training data is not linear. You might see where this is going). To use it for classification, I would need to assign a decision boundary. The decision boundary would be affixed to the model where <span class="arithmatex">\(f(x)\)</span> is equal to 0.5 (the midpoint between binary outputs 0 and 1). The x-value of this decision boundary is the point that differentiates inputs that get a positive classification. What happens to this decision boundary when outliers are added to the training set? Well, the linear regression would change as a result of the outliers, so the x-value of the decision boundary would also change. This isn't ideal behavior - we don't want a different input to change the way the model makes a classification. An example that is positive, no matter to what degree it is, shouldn't change what prediction the model makes. Since linear regression is affected by these outliers, it's not ideal for classification. So we'll want to use a different function.</p>
+<h3 id="logistic-regression">Logistic regression</h3>
+<p>Despite having "regression" in the name, logistic regression is used for classification! According to Ng, it is one of the most widely used classification algorithms in the world. Logistic regression uses a function called a sigmoid. A sigmoid function <span class="arithmatex">\(f(z) = 1 / (1 + e^{-z})\)</span> is used for classification because it transforms all inputs to an output existing between 0 and 1.The output can also be understood as the probability that an input should be classified as 1/positive. When z is 0, the sigmoid function is valued at 0.5. 0.5 is often chosen as a decision boundary - the threshold that determines which category an input belongs to. In other words, 50% probability is the threshold separating a negative and positive classification.</p>
+<h4 id="decision-boundaries">Decision Boundaries</h4>
+<p>When the input of the sigmoid function <span class="arithmatex">\(z\)</span> is substituted with a function such as <span class="arithmatex">\(-3 + x_0+x_1\)</span> or <span class="arithmatex">\(x_0^2 + x_1 -1\)</span>, the function determines the shape of the decision boundary. </p>
+<h4 id="cost-function-for-logistic-regression">Cost function for logistic regression</h4>
+<p>In linear regression, the MSE cost function was used because its convexity allowed the algorithm to converge to a minimum. In logistic regression, the same cost function doesn't work well because the logistic function is nonlinear. When MSE is applied to logistic regression, the cost function exhibits several local minima, which is not ideal for the gradient descent algorithm. Instead of MSE, we'll use a different cost function.</p>
+<p>Important vocabulary distinction: <strong>loss</strong> is a measure of the difference between a prediction and its target, while <strong>cost</strong> is the sum of losses from an entire training set.</p>
+<p>The loss of a sigmoid function is calculated using two separate curves. One is for the case when the true value is positive and the other for when the true value is negative. The behavior of the cost function is as such: when the prediction is close to the true value, the loss is near zero. But when the prediction is close to the opposite of the true value, the loss rapidly approaches infinity. Combined, the two curves make a convex shape, which is an ideal form for gradient descent. The loss function is described as such: <span class="arithmatex">\(loss(f_{\mathbf{w},b}(\mathbf{x}^{(i)}), y^{(i)}) = (-y^{(i)} \log\left(f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right) - \left( 1 - y^{(i)}\right) \log \left( 1 - f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right)\)</span>. Notice that the loss function is comprised of two main terms. When the true prediction is positive, or 1, one term is nullified. The other term is nullified when the true prediction is negative, or 0. </p>
+<p>This particular loss function is derived using a statistical principle called maximum likelihood estimation, which is an idea from statistics about how to efficiently find ideal parameters from different models.</p>
+<p>To derive the cost function, simply add up the losses from each training example and divide by the number of training examples.</p>
+<h4 id="batch-gradient-descent-for-logistic-regression">Batch gradient descent for logistic regression</h4>
+<p>Just like in regression, the weights are updated by subtracting the a product of the learning rate and the gradient of the cost function from the weight's current value.
+<span class="arithmatex">\(\begin{align*}
+&amp;\text{repeat until convergence:} \; \lbrace \\
+&amp;  \; \; \;w_j = w_j -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial w_j} \tag{1}  \; &amp; \text{for j := 0..n-1} \\ 
+&amp;  \; \; \;  \; \;b = b -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial b} \\
+&amp;\rbrace
+\end{align*}\)</span></p>
+<p>How is the gradient of the cost function calculated in this case? It turns out, the cost function gradient takes a similar form to the one in linear regression. That is, 
+ <span class="arithmatex">\(\begin{align*}
+\frac{\partial J(\mathbf{w},b)}{\partial w_j}  &amp;= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)})x_{j}^{(i)} \tag{2} \\
+\frac{\partial J(\mathbf{w},b)}{\partial b}  &amp;= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)}) \tag{3} 
+\end{align*}\)</span>
+The only difference now is that <span class="arithmatex">\((f_{\mathbf{w},b}(\mathbf{x}^{(i)})\)</span> is the sigmoid function, rather than a linear function. The derivation is omitted from this lecture, and can be an exercise for the reader.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">compute_gradient_logistic</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="sd">    Computes the gradient for logistic regression </span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="sd">    Args:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="sd">      X (ndarray (m,n): Data, m examples with n features</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="sd">      y (ndarray (m,)): target values</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="sd">      w (ndarray (n,)): model parameters  </span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="sd">      b (scalar)      : model parameter</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="sd">    Returns</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="sd">      dj_dw (ndarray (n,)): The gradient of the cost w.r.t. the parameters w. </span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="sd">      dj_db (scalar)      : The gradient of the cost w.r.t. the parameter b. </span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="sd">    """</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    <span class="n">dj_dw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,))</span>                           <span class="c1">#(n,)</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    <span class="n">dj_db</span> <span class="o">=</span> <span class="mf">0.</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>        <span class="n">f_wb_i</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>          <span class="c1">#(n,)(n,)=scalar, prediction for a training example</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>        <span class="n">err_i</span>  <span class="o">=</span> <span class="n">f_wb_i</span>  <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>                       <span class="c1">#scalar, error for a full training example</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>            <span class="n">dj_dw</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dj_dw</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">err_i</span> <span class="o">*</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>      <span class="c1">#scalar, for each weight accumulate product of full training example error and X[i, j] (example for that weight). the gradient of each weight depends on these two quantities</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>        <span class="n">dj_db</span> <span class="o">=</span> <span class="n">dj_db</span> <span class="o">+</span> <span class="n">err_i</span>                         <span class="c1"># gradient of bias depends only on the error</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>    <span class="n">dj_dw</span> <span class="o">=</span> <span class="n">dj_dw</span><span class="o">/</span><span class="n">m</span>                                   <span class="c1">#(n,)</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>    <span class="n">dj_db</span> <span class="o">=</span> <span class="n">dj_db</span><span class="o">/</span><span class="n">m</span>                                   <span class="c1">#scalar</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>    <span class="k">return</span> <span class="n">dj_db</span><span class="p">,</span> <span class="n">dj_dw</span> 
+</code></pre></div>
+<p>In gradient descent, the weights are updated by a quantity that depends on the learning rate <span class="arithmatex">\(\alpha\)</span> and the gradient. The gradient is recalculated for each iteration, and depends on the model's error. For non-bias parameters, the weights depend on the product of the error and training examples. For the bias parameter, the gradient is dependent on the error only. The gradient can be understood as a measure of how far away the weights are from their optimal (minimal error) value. When the gradient is large, the model is far from converging. When the gradient is small or near-zero, the weights are near convergence, or have converged.</p>
+<h4 id="logistic-regression-with-scikit-learn">Logistic Regression with Scikit-Learn</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># dataset</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]])</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1"># fit the model</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="n">lr_model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="n">lr_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="c1"># make predictions</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="n">y_pred</span> <span class="o">=</span> <span class="n">lr_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Prediction on training set:"</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="c1"># calculate accuracy</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Accuracy on training set:"</span><span class="p">,</span> <span class="n">lr_model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="overfitting">Overfitting</h3>
+<p>When a model underfits the data, it can also be said to have high bias.</p>
+<p>A model that "generalizes" well is one that fits the training set pretty well (but not perfectly!) and accurately predicts unseen examples.</p>
+<p>A model that "overfits" fits the training set extremely well (perfectly or near-perfectly) but does not accurately predict unseen samples. These models are said to have high variance. They are highly sensitive to small changes in the training data.</p>
+<h4 id="3-techniques-to-address-overfitting">3 techniques to address overfitting</h4>
+<p>The goal of these techniques is to reduce the variance, which will help the model generalize better.</p>
+<p>Increasing the training set size will prevent the model from overfitting a few pieces of data. This may not always be possible in situations where data is scarce.</p>
+<p>Using a subset of existing features will also reduce overfitting. The subset to focus on would be those that are most predictive of the output. This technique is called feature selection. The drawback of this method is that some discarded features could be uesful in predicting the output. There do exist algorithms that automatically select the most appropriate features for prediction tasks.</p>
+<p>Regularization is a technique that diminishes (but does not totally eliminate) the impact that certain features have on the prediction. Instead of eliminating a particular feature by setting all of its parameters to zero, regularization tunes the examples such that the weights for those features end up being very small. This allows for higher-order models to be used without encountering high variance. In practice, the w weights are typically regularized, as opposed to regularizing b. Regularizing b often has little effect on reducing variance. Regularization is also used in neural networks!</p>
+<h4 id="overfitting-lab">Overfitting Lab</h4>
+<ul>
+<li>Polynomials of excessively high degree tend to overfit</li>
+<li>conversely, polynomials of excessively low degree tend to underfit</li>
+<li>extreme examples can increase overfitting (assuming they are outliers)</li>
+<li>nominal examples can reduce overfitting</li>
+<li>fitting a line to smaller datasets can be done without pure gradient descent (implementation method not mentioned, however)</li>
+</ul>
+<h4 id="modifying-the-cost-function-to-accomodate-regularization">Modifying the cost function to accomodate regularization</h4>
+<p>Simply add the weights that you want to minimize to the cost function, and multiply them by relatively large coefficients. The exact quantity doesn't matter as much, but by putting large coefficients in front of these weights, the cost function penalizes these weights heavily when they are large. Assuming that the weights being penalized correspond to higher-order terms, regularization effectively makes the model behave as a lower-order model, thus reducing overfitting.</p>
+<p>To generalize this technique, such as in instances where there are many features and we don't know which ones to regularize, we can simply regularize all of them. This is implemented by adding a regularization term to the cost function that looks like <span class="arithmatex">\(\frac{\lambda}{2m} \sum\limits_{j = 1}^{n} (w_j^2)\)</span>, where <span class="arithmatex">\(m\)</span> is the number of training examples, <span class="arithmatex">\(n\)</span> is the number of weights, and <span class="arithmatex">\(\lambda\)</span> is a hyperparameter that controls the strength of the regularization penalty. When <span class="arithmatex">\(\lambda\)</span> is large, the cost function penalizes the weights so much that the only weight left over is the constant bias term, <span class="arithmatex">\(b\)</span>. When <span class="arithmatex">\(\lambda\)</span> is very small, the regularization term is effectively nullified, and high variance can exist in the model. The <span class="arithmatex">\(\frac{\lambda}{2m}\)</span> scaling factor makes it likelier for lambda to work with larger datasets (larger <span class="arithmatex">\(m\)</span>) as it did for smaller ones.</p>
+<h4 id="gradient-descent-with-regularization">gradient descent with regularization</h4>
+<p>The only difference between the gradients for non-regularized and regularized models is that the gradient for <span class="arithmatex">\(\mathbf{w}\)</span> includes a new term: the partial derivative of the regularization term with respect to <span class="arithmatex">\(w_j\)</span>, which turns out to be <span class="arithmatex">\(\frac{\lambda}{m}w_j\)</span>. As stated previously, <span class="arithmatex">\(b\)</span> is not typically regularized, so in most circumstances there is no need to add a regularization term to its gradient in the regularized case, making it identical to the non-regularized gradient.</p>
+<h4 id="final-lab-building-a-logistic-regression-model-from-scratch">Final lab: building a logistic regression model from scratch</h4>
+<ol>
+<li>
+<p>Visualize the shape of the data by viewing dimensions of data, peeking at values, plotting features vs. output
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1"># load dataset</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s2">"data/ex2data1.txt"</span><span class="p">)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"First five elements in X_train are:</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">X_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Type of X_train:"</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"First five elements in y_train are:</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">y_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nb">print</span><span class="p">(</span><span class="s2">"Type of y_train:"</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">y_train</span><span class="p">))</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="nb">print</span> <span class="p">(</span><span class="s1">'The shape of X_train is: '</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="nb">print</span> <span class="p">(</span><span class="s1">'The shape of y_train is: '</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="nb">print</span> <span class="p">(</span><span class="s1">'We have m = </span><span class="si">%d</span><span class="s1"> training examples'</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="c1"># Plot examples</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="n">plot_data</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">[:],</span> <span class="n">pos_label</span><span class="o">=</span><span class="s2">"Admitted"</span><span class="p">,</span> <span class="n">neg_label</span><span class="o">=</span><span class="s2">"Not admitted"</span><span class="p">)</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="c1"># Set the y-axis label</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Exam 2 score'</span><span class="p">)</span> 
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="c1"># Set the x-axis label</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Exam 1 score'</span><span class="p">)</span> 
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"upper right"</span><span class="p">)</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Implement the sigmoid function. The input to the sigmoid function can be a scalar or a vector. To handle vectors, I used the np.power method to calculate the exponential in the denominator.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="sd">    Compute the sigmoid of z</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="sd">    Args:</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="sd">        z (scalar or ndarray): A scalar or numpy array of any size.</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="sd">        g (scalar or ndarray): sigmoid(z), with the same shape as z if z is a numpy array.</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="sd">    """</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="c1">### START CODE HERE ### </span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="p">,</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>    <span class="c1">### END SOLUTION ###  </span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>    <span class="k">return</span> <span class="n">g</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Implement the cost function. I broke this down into three lines of code, each being a component of the cost: linear model output, <span class="arithmatex">\(g(z)\)</span>, loss, and cost. The linear model output is obtaind by calculating the dot product of the training examples and the weights and adding the bias term. <span class="arithmatex">\(g(z)\)</span>, otherwise known as the sigmoid output, is simply the result of the linear model output when it is fed into the sigmoid function that I wrote in the previous step. To calculate the loss, I used the binary cross-entropy loss (log loss). Notably, the natural log function is typically used, rather than the base 10 log function. Functionally speaking, gradient descent will work with either implementation, but natural log is preferred because it simplifies the gradient calculation. Using base 10 log introduces a scaling factor that clutters the derivation.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">compute_cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">argv</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="sd">    Computes the cost over all examples</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="sd">    Args:</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="sd">      X : (ndarray Shape (m,n)) data, m examples by n features</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="sd">      y : (ndarray Shape (m,))  target value </span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="sd">      w : (ndarray Shape (n,))  values of parameters of the model      </span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="sd">      b : (scalar)              value of bias parameter of the model</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="sd">      *argv : unused, for compatibility with regularized version below</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="sd">      total_cost : (scalar) cost </span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="sd">    """</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="c1">### START CODE HERE ###</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    <span class="c1"># total cost is the average loss calculation for each training example</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    <span class="c1"># the loss function input is the output of the sigmoid function</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>    <span class="c1"># the output of the sigmoid function depends on the output of the linear model</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>    <span class="n">linear_model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>    <span class="c1"># let g be the sigmoid output</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>    <span class="n">g</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">linear_model</span><span class="p">)</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>    <span class="c1"># the loss for each example in g depends on the difference between g and the actual value in y</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>    <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">g</span><span class="p">))</span> <span class="o">-</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">g</span><span class="p">))</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>    <span class="c1"># total cost is the sum of all losses divided by the number of training examples</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>    <span class="n">total_cost</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span> <span class="o">/</span> <span class="n">m</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>    <span class="c1">### END CODE HERE ### </span>
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a>    <span class="k">return</span> <span class="n">total_cost</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Implement the gradient for logistic regression
+The skeleton code for this section uses a double nested for loopm, but I opted to vectorize when possible. Like the cost function calculation, the gradient depends on the difference between the sigmoid output of the linear model (prediction delta) and the true label. dj_db was calculable using vectorization. Each dj_dw value (one for each weight) was obtained by calculating the average value of [the product of each prediction delta and its input feature value], for all feature examples. This was the only part of the code that requried a for loop. 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">compute_gradient</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">argv</span><span class="p">):</span> 
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="sd">    Computes the gradient for logistic regression </span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="sd">    Args:</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="sd">      X : (ndarray Shape (m,n)) data, m examples by n features</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="sd">      y : (ndarray Shape (m,))  target value </span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="sd">      w : (ndarray Shape (n,))  values of parameters of the model      </span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="sd">      b : (scalar)              value of bias parameter of the model</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="sd">      *argv : unused, for compatibility with regularized version below</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="sd">    Returns</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="sd">      dj_dw : (ndarray Shape (n,)) The gradient of the cost w.r.t. the parameters w. </span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="sd">      dj_db : (scalar)             The gradient of the cost w.r.t. the parameter b. </span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="sd">    """</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>    <span class="n">dj_dw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>    <span class="n">dj_db</span> <span class="o">=</span> <span class="mf">0.</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="c1">#     ### START CODE HERE ### </span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="c1">#     for i in range(m):</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="c1">#         z_wb = None</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="c1">#         for j in range(n): </span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="c1">#             z_wb += None</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="c1">#         z_wb += None</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="c1">#         f_wb = None</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="c1">#         dj_db_i = None</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="c1">#         dj_db += None</span>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="c1">#         for j in range(n):</span>
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="c1">#             dj_dw[j] = None</span>
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a><span class="c1">#     dj_dw = None</span>
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="c1">#     dj_db = None</span>
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>    <span class="c1">### END CODE HERE ###</span>
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a>    <span class="c1"># not sure why for loop is being used here. trying vectorization instead</span>
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a>    <span class="n">linear_model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>    <span class="n">g</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">linear_model</span><span class="p">)</span>
+<a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a>    <span class="n">dj_db</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">g</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+<a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a>        <span class="n">dj_dw</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">((</span><span class="n">g</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="n">j</span><span class="p">]))</span>
+<a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a>
+<a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a>    <span class="k">return</span> <span class="n">dj_db</span><span class="p">,</span> <span class="n">dj_dw</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Using the weights and predictions from gradient descent, plot the results
+The weights that gradient descent converges on are the parameters for the decision boundary. Gradient descent code, which was provided, is included here.</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w_in</span><span class="p">,</span> <span class="n">b_in</span><span class="p">,</span> <span class="n">cost_function</span><span class="p">,</span> <span class="n">gradient_function</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">num_iters</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">):</span> 
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="sd">    Performs batch gradient descent to learn theta. Updates theta by taking </span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="sd">    num_iters gradient steps with learning rate alpha</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="sd">    Args:</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="sd">      X :    (ndarray Shape (m, n) data, m examples by n features</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="sd">      y :    (ndarray Shape (m,))  target value </span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="sd">      w_in : (ndarray Shape (n,))  Initial values of parameters of the model</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="sd">      b_in : (scalar)              Initial value of parameter of the model</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="sd">      cost_function :              function to compute cost</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="sd">      gradient_function :          function to compute gradient</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="sd">      alpha : (float)              Learning rate</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="sd">      num_iters : (int)            number of iterations to run gradient descent</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="sd">      lambda_ : (scalar, float)    regularization constant</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="sd">      w : (ndarray Shape (n,)) Updated values of parameters of the model after</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="sd">          running gradient descent</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="sd">      b : (scalar)                Updated value of parameter of the model after</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="sd">          running gradient descent</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="sd">    """</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>    <span class="c1"># number of training examples</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>    <span class="c1"># An array to store cost J and w's at each iteration primarily for graphing later</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>    <span class="n">J_history</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>    <span class="n">w_history</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a>
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iters</span><span class="p">):</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a>        <span class="c1"># Calculate the gradient and update the parameters</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a>        <span class="n">dj_db</span><span class="p">,</span> <span class="n">dj_dw</span> <span class="o">=</span> <span class="n">gradient_function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w_in</span><span class="p">,</span> <span class="n">b_in</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">)</span>   
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a>
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a>        <span class="c1"># Update Parameters using w, b, alpha and gradient</span>
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a>        <span class="n">w_in</span> <span class="o">=</span> <span class="n">w_in</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">dj_dw</span>               
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a>        <span class="n">b_in</span> <span class="o">=</span> <span class="n">b_in</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">dj_db</span>              
+<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a>
+<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>        <span class="c1"># Save cost J at each iteration</span>
+<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a>        <span class="k">if</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">100000</span><span class="p">:</span>      <span class="c1"># prevent resource exhaustion </span>
+<a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a>            <span class="n">cost</span> <span class="o">=</span>  <span class="n">cost_function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w_in</span><span class="p">,</span> <span class="n">b_in</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">)</span>
+<a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a>            <span class="n">J_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+<a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a>
+<a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a>        <span class="c1"># Print cost every at intervals 10 times or as many iterations if &lt; 10</span>
+<a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a>        <span class="k">if</span> <span class="n">i</span><span class="o">%</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">num_iters</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="p">(</span><span class="n">num_iters</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a>            <span class="n">w_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_in</span><span class="p">)</span>
+<a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Iteration </span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">4</span><span class="si">}</span><span class="s2">: Cost </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">J_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s2">8.2f</span><span class="si">}</span><span class="s2">   "</span><span class="p">)</span>
+<a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a>
+<a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a>    <span class="k">return</span> <span class="n">w_in</span><span class="p">,</span> <span class="n">b_in</span><span class="p">,</span> <span class="n">J_history</span><span class="p">,</span> <span class="n">w_history</span> <span class="c1">#return w and J,w history for graphing</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">initial_w</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">initial_b</span> <span class="o">=</span> <span class="o">-</span><span class="mi">8</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># Some gradient descent settings</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="n">iterations</span> <span class="o">=</span> <span class="mi">10000</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.001</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="n">w</span><span class="p">,</span><span class="n">b</span><span class="p">,</span> <span class="n">J_history</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">gradient_descent</span><span class="p">(</span><span class="n">X_train</span> <span class="p">,</span><span class="n">y_train</span><span class="p">,</span> <span class="n">initial_w</span><span class="p">,</span> <span class="n">initial_b</span><span class="p">,</span> 
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>                                   <span class="n">compute_cost</span><span class="p">,</span> <span class="n">compute_gradient</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">iterations</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="n">plot_decision_boundary</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="c1"># Set the y-axis label</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Exam 2 score'</span><span class="p">)</span> 
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="c1"># Set the x-axis label</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Exam 1 score'</span><span class="p">)</span> 
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"upper right"</span><span class="p">)</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<ol>
+<li>Make a prediction baesd on the learned weights</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="sd">    Predict whether the label is 0 or 1 using learned logistic</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="sd">    regression parameters w</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="sd">    Args:</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="sd">      X : (ndarray Shape (m,n)) data, m examples by n features</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="sd">      w : (ndarray Shape (n,))  values of parameters of the model      </span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="sd">      b : (scalar)              value of bias parameter of the model</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="sd">      p : (ndarray (m,)) The predictions for X using a threshold at 0.5</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="sd">    """</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>    <span class="c1"># number of training examples</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>   
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>    <span class="c1">### START CODE HERE ### </span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>    <span class="c1"># Loop over each example</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>    <span class="c1"># feed each example through f(g(z)). in other words, put it through the linear model, </span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>    <span class="c1"># then put the output of the linear model to the sigmoid function for the prediction</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="c1">#     for i in range(m):   </span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="c1">#         z_wb = 0</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="c1">#         # Loop over each feature</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="c1">#         for j in range(n): </span>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a><span class="c1">#             # Add the corresponding term to z_wb</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a><span class="c1">#             z_wb += X[i][j] * w[j]</span>
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="c1">#         # Add bias term </span>
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a><span class="c1">#         z_wb += b</span>
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a><span class="c1">#         # Calculate the prediction for this example</span>
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a><span class="c1">#         f_wb = sigmoid(z_wb)</span>
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a><span class="c1">#         # Apply the threshold</span>
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a><span class="c1">#         p[i] = (f_wb &gt;= 0.5)</span>
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a>
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>    <span class="n">z_wb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>    <span class="n">f_wb</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z_wb</span><span class="p">)</span>
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>    <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_wb</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span>
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>
+<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a>    <span class="c1">### END CODE HERE ### </span>
+<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a>    <span class="k">return</span> <span class="n">p</span>
+<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a>
+<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a><span class="c1"># Test your predict code</span>
+<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a><span class="n">tmp_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a><span class="n">tmp_b</span> <span class="o">=</span> <span class="mf">0.3</span>    
+<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a><span class="n">tmp_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span>
+<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>
+<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a><span class="n">tmp_p</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">tmp_X</span><span class="p">,</span> <span class="n">tmp_w</span><span class="p">,</span> <span class="n">tmp_b</span><span class="p">)</span>
+<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Output of predict: shape </span><span class="si">{</span><span class="n">tmp_p</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">, value </span><span class="si">{</span><span class="n">tmp_p</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>
+<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a><span class="c1"># UNIT TESTS        </span>
+<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a><span class="n">predict_test</span><span class="p">(</span><span class="n">predict</span><span class="p">)</span>
+</code></pre></div>
+<ol>
+<li>Tying it all together with regularized logistic regression
+Given a dataset containing test result data for a microchip, and a determination (pass, failed) of the microchip after QA analysis, we want to predict whether a microchip with test results will pass or fail. </li>
+</ol>
+<p>Plotting the data reveals that the potential decision boundary would be ill-served with a linear model.</p>
+<p>So to increase our chances of finding a better model, we construct new features from each data point.</p>
+<p>Given two features, <span class="arithmatex">\(x_1\)</span> and <span class="arithmatex">\(x_2\)</span>, we map the features into all polynomial terms of these features of a 6th order polynomial. </p>
+<div class="arithmatex">\[\mathrm{map\_feature}(x) = 
+\left[\begin{array}{c}
+x_1\\
+x_2\\
+x_1^2\\
+x_1 x_2\\
+x_2^2\\
+x_1^3\\
+\vdots\\
+x_1 x_2^5\\
+x_2^6\end{array}\right]\]</div>
+<p>The function that does this was provided in the lab. The feature mapping function increased the number of features from 2 to 27. </p>
+<p>The intent with this feature mapping is to improve the model's ability to fit the data. Without regularization, the model is susceptible to overfitting/high variance.</p>
+<p>To implement regularization, an extra term is added to the cost function for the weights in <span class="arithmatex">\(\vec{w}\)</span>. <span class="arithmatex">\(b\)</span> doesn't need a regularized term, since it purportedly has little effect on the outcome. </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">compute_cost_reg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">lambda_</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="sd">    Computes the cost over all examples</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="sd">    Args:</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="sd">      X : (ndarray Shape (m,n)) data, m examples by n features</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="sd">      y : (ndarray Shape (m,))  target value </span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="sd">      w : (ndarray Shape (n,))  values of parameters of the model      </span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="sd">      b : (scalar)              value of bias parameter of the model</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="sd">      lambda_ : (scalar, float) Controls amount of regularization</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="sd">      total_cost : (scalar)     cost </span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="sd">    """</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>    <span class="c1"># Calls the compute_cost function that you implemented above</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>    <span class="n">cost_without_reg</span> <span class="o">=</span> <span class="n">compute_cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> 
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>    <span class="c1"># You need to calculate this value</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>    <span class="n">reg_cost</span> <span class="o">=</span> <span class="mf">0.</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>    <span class="c1">### START CODE HERE ###</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>    <span class="n">reg_cost</span> <span class="o">=</span> <span class="p">(</span><span class="n">lambda_</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>    <span class="c1">### END CODE HERE ### </span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>    <span class="c1"># Add the regularization cost to get the total cost</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>    <span class="n">total_cost</span> <span class="o">=</span> <span class="n">cost_without_reg</span> <span class="o">+</span> <span class="n">reg_cost</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>    <span class="k">return</span> <span class="n">total_cost</span>
+</code></pre></div>
+<p>For the gradient, the update is similar:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">compute_gradient_reg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">lambda_</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span> 
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="sd">    Computes the gradient for logistic regression with regularization</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="sd">    Args:</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="sd">      X : (ndarray Shape (m,n)) data, m examples by n features</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="sd">      y : (ndarray Shape (m,))  target value </span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="sd">      w : (ndarray Shape (n,))  values of parameters of the model      </span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="sd">      b : (scalar)              value of bias parameter of the model</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="sd">      lambda_ : (scalar,float)  regularization constant</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="sd">    Returns</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="sd">      dj_db : (scalar)             The gradient of the cost w.r.t. the parameter b. </span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="sd">      dj_dw : (ndarray Shape (n,)) The gradient of the cost w.r.t. the parameters w. </span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="sd">    """</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>    <span class="n">dj_db</span><span class="p">,</span> <span class="n">dj_dw</span> <span class="o">=</span> <span class="n">compute_gradient</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>    <span class="c1">### START CODE HERE ###     </span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>    <span class="n">dj_dw</span> <span class="o">+=</span> <span class="p">(</span><span class="n">lambda_</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">w</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>    <span class="c1">### END CODE HERE ###         </span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>    <span class="k">return</span> <span class="n">dj_db</span><span class="p">,</span> <span class="n">dj_dw</span>
+</code></pre></div>
+<p>It is after this step that gradient descent can be used to learn the weights. Once the weights have been learned, they can be used to plot the decision boundary and predict the inputs.</p>
+<p>And that concludes the topics covered in this course! I had a lot of fun learning regression and classification basics and I am excited to continue on to Advanced Learning Algorithms. </p>
+<h2 id="areas-for-further-exploration">Areas for Further Exploration</h2>
+<p>I realized there were a few areas for me to dive deeper into while learning from the lectures. Some fundamentals could be refreshed/learned. Some derivation details were left out, as well as fundamental statistical ideas, such as maximum likelihood estimation.</p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-custom" title="August 28, 2026 04:56:49 UTC">last updated on Aug 28, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Victor Dinh
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/vd141" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://twitter.com/victorhdinh" target="_blank" rel="noopener" title="Twitter" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M357.2 48h70.6L273.6 224.2 455 464H313L201.7 318.6 74.5 464H3.8l164.9-188.5L-5.2 48h145.6l100.5 132.9zm-24.8 373.8h39.1L119.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://www.linkedin.com/in/victor-dinh/" target="_blank" rel="noopener" title="LinkedIn" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="/blog/" target="_blank" rel="noopener" title="Blog" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["search.suggest", "search.highlight", "search.share", "header.autohide", "navigation.indexes"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
